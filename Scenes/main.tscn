@@ -1,7 +1,29 @@
 [gd_scene format=3 uid="uid://cqow47bch5ocs"]
 
+[ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://Addons/proto_controller/proto_controller.tscn" id="1_jjgbg"]
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_57qmd"]
+
+[sub_resource type="Sky" id="Sky_yf5fn"]
+sky_material = SubResource("PhysicalSkyMaterial_57qmd")
+
+[sub_resource type="Environment" id="Environment_g4v7s"]
+background_mode = 2
+sky = SubResource("Sky_yf5fn")
+
 [node name="Main" type="Node3D" unique_id=1059331684]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1770082999]
-transform = Transform3D(1.6287448, 0, 0, 0, 1.6287448, 0, 0, 0, 1.6287448, 0, 0, 0)
-size = Vector3(18.010544, 1, 22.915192)
+transform = Transform3D(1.6287448, 0, 0, 0, 1.6287448, 0, 0, 0, 1.6287448, 0.24635863, 0, 0.47804737)
+use_collision = true
+size = Vector3(47.200417, 1, 54.28794)
+
+[node name="ProtoController" parent="." unique_id=1591920305 instance=ExtResource("1_jjgbg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.097005, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1958231690]
+environment = SubResource("Environment_g4v7s")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=915686872]
+transform = Transform3D(1, 0, 0, 0, -0.20548597, 0.97866005, 0, -0.97866005, -0.20548597, 0, 12.13024, 0)
+shadow_enabled = true
