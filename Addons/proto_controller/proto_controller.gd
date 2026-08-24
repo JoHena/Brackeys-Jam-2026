@@ -5,6 +5,8 @@
 
 extends CharacterBody3D
 
+class_name Player
+
 ## Can we move around?
 @export var can_move : bool = true
 ## Are we affected by gravity?
@@ -30,13 +32,13 @@ extends CharacterBody3D
 
 @export_group("Input Actions")
 ## Name of Input Action to move Left.
-@export var input_left : String = "ui_left"
+@export var input_left : String = "Left"
 ## Name of Input Action to move Right.
-@export var input_right : String = "ui_right"
+@export var input_right : String = "Right"
 ## Name of Input Action to move Forward.
-@export var input_forward : String = "ui_up"
+@export var input_forward : String = "Up"
 ## Name of Input Action to move Backward.
-@export var input_back : String = "ui_down"
+@export var input_back : String = "Down"
 ## Name of Input Action to Jump.
 @export var input_jump : String = "ui_accept"
 ## Name of Input Action to Sprint.
@@ -49,14 +51,27 @@ var look_rotation : Vector2
 var move_speed : float = 0.0
 var freeflying : bool = false
 
+var IsInteracting: bool = false
+
 ## IMPORTANT REFERENCES
 @onready var head: Node3D = $Head
 @onready var collider: CollisionShape3D = $Collider
+@onready var shape_cast_3d : ShapeCast3D = $Head/Camera3D/ShapeCast3D
 
 func _ready() -> void:
 	check_input_mappings()
 	look_rotation.y = rotation.y
 	look_rotation.x = head.rotation.x
+
+func _input(event: InputEvent) -> void:
+	# Exctract to another script for more interactables
+	if Input.is_action_just_pressed("Interact"):
+		if shape_cast_3d.is_colliding():
+			var collided = shape_cast_3d.get_collision_result()[0]["collider"]
+
+			if collided is PCStatic:
+				IsInteracting = true;
+				collided.toogle_use()
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Mouse capturing
@@ -66,8 +81,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		release_mouse()
 	
 	# Look around
-	if mouse_captured and event is InputEventMouseMotion:
-		rotate_look(event.relative)
+	if(!IsInteracting):
+		if mouse_captured and event is InputEventMouseMotion:
+			rotate_look(event.relative)
 	
 	# Toggle freefly mode
 	if can_freefly and Input.is_action_just_pressed(input_freefly):
@@ -102,7 +118,7 @@ func _physics_process(delta: float) -> void:
 		move_speed = base_speed
 
 	# Apply desired movement to velocity
-	if can_move:
+	if can_move and !IsInteracting:
 		var input_dir := Input.get_vector(input_left, input_right, input_forward, input_back)
 		var move_dir := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		if move_dir:

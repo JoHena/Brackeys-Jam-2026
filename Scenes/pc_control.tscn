@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cm7152dxi5m2v"]
+
+[ext_resource type="Texture2D" uid="uid://b4sgob4qwlotx" path="res://Models/Pc_BG.jpg" id="1_s37md"]
+
+[node name="PCControl" type="Control" unique_id=1553052356]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Background" type="TextureRect" parent="." unique_id=1018922831]
+custom_minimum_size = Vector2(800, 512)
+layout_mode = 0
+offset_right = 800.0
+offset_bottom = 512.0
+texture = ExtResource("1_s37md")
+expand_mode = 2
