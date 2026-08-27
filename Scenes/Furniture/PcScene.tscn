@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dey7jv8kc2jm1" path="res://Scripts/pc_scene.gd" id="1_nbb70"]
 [ext_resource type="Texture2D" uid="uid://dmk0bn1g6urvn" path="res://Models/computer_v3_cable_color.png" id="2_nrli6"]
-[ext_resource type="AudioStream" uid="uid://1pw2m7m28kiq" path="res://SFX/mouse_click_1.ogg" id="2_qurrg"]
 [ext_resource type="Texture2D" uid="uid://c64u7svs5ko6l" path="res://Models/computer_v3_cable_normal.png" id="3_qurrg"]
 [ext_resource type="Material" uid="uid://b6pi7kwxkneam" path="res://Shaders/InteractiveScreen.tres" id="4_xvrl6"]
 [ext_resource type="PackedScene" uid="uid://cm7152dxi5m2v" path="res://Scenes/pc_control.tscn" id="5_mq66u"]
@@ -237,7 +236,6 @@ size = Vector3(0.8462391, 0.75158453, 1.0385971)
 [node name="Node PC" type="StaticBody3D" unique_id=1427728777]
 collision_layer = 4
 script = ExtResource("1_nbb70")
-click_sfx = ExtResource("2_qurrg")
 
 [node name="AreaLight3D" type="AreaLight3D" parent="." unique_id=653205156]
 transform = Transform3D(0.020957919, -0.9993963, -0.027708536, 0.9906047, 0.017011395, 0.13569427, -0.13514099, -0.030292075, 0.99036324, -0.38007355, 1.1050078, 0.5081495)
@@ -276,7 +274,7 @@ size = Vector2i(800, 512)
 
 [node name="PCControl" parent="SubViewport" unique_id=1553052356 instance=ExtResource("5_mq66u")]
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=358237179]
+[node name="InteractableCamera" type="Camera3D" parent="." unique_id=358237179]
 transform = Transform3D(-0.9999701, 0.0010704206, 0.007659856, 1.9176045e-09, 0.99037653, -0.13839914, -0.0077342875, -0.138395, -0.9903469, -0.3098222, 0.9911655, -0.17261478)
 projection = 1
 size = 0.6

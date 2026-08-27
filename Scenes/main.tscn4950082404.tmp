@@ -49,7 +49,7 @@ transform = Transform3D(-0.7929479, 0, 0.10599054, 0, 0.79999983, 0, -0.10599054
 stream = ExtResource("10_hptm8")
 autoplay = true
 
-[node name="Control" type="Control" parent="." unique_id=1962971361 node_paths=PackedStringArray("char_text")]
+[node name="Control" type="Control" parent="." unique_id=1962971361]
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -59,8 +59,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("4_kry3j")
-jsonsrc = "res://Dialogue/Dialogue.json"
-char_text = NodePath("RichTextLabel")
 
 [node name="ColorRect" type="ColorRect" parent="Control" unique_id=1055027397]
 layout_mode = 0

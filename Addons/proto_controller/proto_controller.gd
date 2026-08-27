@@ -61,6 +61,7 @@ var IsInteracting: bool = false
 @onready var collider: CollisionShape3D = $Collider
 @onready var shape_cast_3d : ShapeCast3D = $Head/Camera3D/ShapeCast3D
 @onready var audio_player: AudioStreamPlayer3D = $AudioStreamPlayer3D
+@onready var pointer = $Head/Camera3D/Dot
 
 func _ready() -> void:
 	check_input_mappings()
@@ -68,16 +69,19 @@ func _ready() -> void:
 	look_rotation.x = head.rotation.x
 
 func _input(event: InputEvent) -> void:
-	# Exctract to another script for more interactables
+	# Works for any Interactable subclass (PC, intercom, etc) instead of
+	# hardcoding a single type. IsInteracting/can_move don't need to be set
+	# here anymore — Interactable._on_interaction_toggled already syncs
+	# both of those on this Player whenever toggle_use() fires its signal.
+	if IsInteracting:
+		pointer.visible = false
+		return
+
 	if Input.is_action_just_pressed("Interact"):
 		if shape_cast_3d.is_colliding():
 			var collided = shape_cast_3d.get_collision_result()[0]["collider"]
-
-			if collided is PCStatic:
-				if(!IsInteracting):
-					IsInteracting = true;
-					can_move = false;
-					collided.toggle_use()
+			if collided is Interactable:
+				collided.toggle_use()
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Mouse capturing
@@ -88,6 +92,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	
 	# Look around
 	if(!IsInteracting):
+		pointer.visible = true
 		if mouse_captured and event is InputEventMouseMotion:
 			rotate_look(event.relative)
 	

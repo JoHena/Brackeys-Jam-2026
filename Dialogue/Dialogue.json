@@ -1,0 +1,18 @@
+{
+	"Start": {
+		"text": "Hello??",
+		"name": "???",
+		"choices": {
+			"Where am I?!?!" : "A-Where",
+		},
+		"next": "A-Where"
+	},
+	"A-Where" : {
+		"text": "Where am I?",
+		"name": "???",
+		"next": "Blablabla"
+	},
+	"Blablabla": {
+		"text": "What is this place??"
+	}
+}

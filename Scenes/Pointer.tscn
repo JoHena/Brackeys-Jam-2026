@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://c7svfb4xn7ivs"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_e3kbv"]
+load_path = "res://.godot/imported/circle.png-10953cad44a8947fbdd4128a631e9e52.s3tc.ctex"
+
+[node name="Node3D" type="Sprite3D" unique_id=366261346]
+transform = Transform3D(0.003, 0, 0, 0, 0.003, 0, 0, 0, 0.003, 0, 0, 0)
+modulate = Color(0.66653883, 0.3493462, 0.14085731, 1)
+no_depth_test = true
+texture = SubResource("CompressedTexture2D_e3kbv")
