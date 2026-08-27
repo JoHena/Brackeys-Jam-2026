@@ -1,12 +1,41 @@
 [gd_scene format=3 uid="uid://cm7152dxi5m2v"]
 
+[ext_resource type="Script" uid="uid://bv3ljm7syle4d" path="res://Scripts/pc_control.gd" id="1_8e2e7"]
 [ext_resource type="Texture2D" uid="uid://b4sgob4qwlotx" path="res://Models/Pc_BG.jpg" id="1_s37md"]
+[ext_resource type="Texture2D" uid="uid://c7kp45j78kml5" path="res://Cursor79.png" id="2_sh26r"]
+[ext_resource type="Shader" uid="uid://r0gpbajjeqfy" path="res://Shaders/CRT.gdshader" id="4_7syg2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5qjw6"]
+shader = ExtResource("4_7syg2")
+shader_parameter/brightness = 1.02
+shader_parameter/contrast = 1.08
+shader_parameter/saturation = 1.7590000835525
+shader_parameter/gamma = 2.53800011403523
+shader_parameter/curvature = 0.018000000855
+shader_parameter/corner_soften = 0.0310000014725
+shader_parameter/vignette = 0.2750000130625
+shader_parameter/scanline_strength = 0.62000002945
+shader_parameter/scanline_density = 1.150000030875
+shader_parameter/interlace_strength = 0.002000000095
+shader_parameter/mask_strength = 0.22
+shader_parameter/mask_scale = 1.0
+shader_parameter/chroma_offset_px = 1.6
+shader_parameter/luma_smear_px = 3.606000171285
+shader_parameter/jitter_px = 1.1850000562875
+shader_parameter/wobble_px = 0.0
+shader_parameter/tape_noise = 0.22
+shader_parameter/tape_lines = 0.35
+shader_parameter/roll_speed = 1.45200006897
+shader_parameter/roll_strength = 0.15
+shader_parameter/glow_strength = 0.71200003382
+shader_parameter/glow_threshold = 0.65
 
 [node name="PCControl" type="Control" unique_id=1553052356]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 800.0
+offset_bottom = 507.0
+script = ExtResource("1_8e2e7")
 
 [node name="Background" type="TextureRect" parent="." unique_id=1018922831]
 custom_minimum_size = Vector2(800, 512)
@@ -15,3 +44,13 @@ offset_right = 800.0
 offset_bottom = 512.0
 texture = ExtResource("1_s37md")
 expand_mode = 2
+
+[node name="Cursor" type="Sprite2D" parent="." unique_id=1858038245]
+top_level = true
+texture = ExtResource("2_sh26r")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=619805776]
+material = SubResource("ShaderMaterial_5qjw6")
+layout_mode = 0
+offset_right = 803.0
+offset_bottom = 512.0

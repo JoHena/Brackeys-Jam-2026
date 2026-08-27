@@ -45,6 +45,7 @@ class_name Player
 @export var input_sprint : String = "sprint"
 ## Name of Input Action to toggle freefly mode.
 @export var input_freefly : String = "freefly"
+@export var footstep_cooldown := 0.0
 
 var mouse_captured : bool = false
 var look_rotation : Vector2
@@ -53,10 +54,13 @@ var freeflying : bool = false
 
 var IsInteracting: bool = false
 
+
+
 ## IMPORTANT REFERENCES
 @onready var head: Node3D = $Head
 @onready var collider: CollisionShape3D = $Collider
 @onready var shape_cast_3d : ShapeCast3D = $Head/Camera3D/ShapeCast3D
+@onready var audio_player: AudioStreamPlayer3D = $AudioStreamPlayer3D
 
 func _ready() -> void:
 	check_input_mappings()
@@ -70,8 +74,10 @@ func _input(event: InputEvent) -> void:
 			var collided = shape_cast_3d.get_collision_result()[0]["collider"]
 
 			if collided is PCStatic:
-				IsInteracting = true;
-				collided.toogle_use()
+				if(!IsInteracting):
+					IsInteracting = true;
+					can_move = false;
+					collided.toggle_use()
 
 func _unhandled_input(event: InputEvent) -> void:
 	# Mouse capturing
@@ -124,15 +130,25 @@ func _physics_process(delta: float) -> void:
 		if move_dir:
 			velocity.x = move_dir.x * move_speed
 			velocity.z = move_dir.z * move_speed
+			
+			footstep_cooldown -= get_process_delta_time()
+
+			if footstep_cooldown <= 0:
+				audio_player.stream = load("res://SFX/footstep.ogg")
+				audio_player.play()
+				footstep_cooldown = 0.2
 		else:
 			velocity.x = move_toward(velocity.x, 0, move_speed)
 			velocity.z = move_toward(velocity.z, 0, move_speed)
+			footstep_cooldown = 0
 	else:
 		velocity.x = 0
 		velocity.y = 0
 	
 	# Use velocity to actually move
 	move_and_slide()
+	
+
 
 
 ## Rotate us to look around.

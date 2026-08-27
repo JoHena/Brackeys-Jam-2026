@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://deajnerle7if0"]
+
+[ext_resource type="Script" uid="uid://cik1ct54omdqx" path="res://Scripts/intercom.gd" id="1_1nq7g"]
+[ext_resource type="PackedScene" uid="uid://bta8vjm5l3slj" path="res://Models/intercom.glb" id="1_e5vip"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g4v7s"]
+size = Vector3(0.026229858, 0.1013031, 0.09420776)
+
+[node name="Intercom" type="StaticBody3D" unique_id=1819134661]
+script = ExtResource("1_1nq7g")
+
+[node name="Model" parent="." unique_id=1117144492 instance=ExtResource("1_e5vip")]
+transform = Transform3D(0.22, 0, 0, 0, 0.44, 0, 0, 0, 0.44, 0, 0, 0)
+
+[node name="intercom_LP" parent="Model" index="0" unique_id=176015403]
+transform = Transform3D(1, 0, -1.1368684e-13, 0, 1, 0, 2.842171e-14, 0, 1, -0.061265945, -0.12647426, -0.1429801)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=915425895]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.010154253, -0.05155182, -0.06523132)
+shape = SubResource("BoxShape3D_g4v7s")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=104214965]
+transform = Transform3D(2.9802322e-08, 0, 1, 0, 1, 0, -1, 0, 2.9802322e-08, 0.080834866, -0.055195898, -0.058426023)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=69204256]
+
+[editable path="Model"]

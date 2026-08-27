@@ -1,16 +1,20 @@
 [gd_scene format=3 uid="uid://cqow47bch5ocs"]
 
 [ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://Addons/proto_controller/proto_controller.tscn" id="1_jjgbg"]
-[ext_resource type="PackedScene" uid="uid://cvskn7pjdkebr" path="res://Scenes/PcScene.tscn" id="2_bo1nx"]
-
-[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_57qmd"]
-
-[sub_resource type="Sky" id="Sky_yf5fn"]
-sky_material = SubResource("PhysicalSkyMaterial_57qmd")
+[ext_resource type="PackedScene" uid="uid://cmsei1ulpnh8f" path="res://Scenes/Room.tscn" id="2_8gbba"]
+[ext_resource type="AudioStream" uid="uid://cdwa2uanbo16v" path="res://SFX/Ambient.ogg" id="10_hptm8"]
 
 [sub_resource type="Environment" id="Environment_g4v7s"]
-background_mode = 2
-sky = SubResource("Sky_yf5fn")
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(0.6175914, 0.33230355, 0, 1)
+ambient_light_energy = 0.7
+tonemap_mode = 4
+tonemap_exposure = 0.27
+tonemap_agx_contrast = 1.94
+ssao_enabled = true
+ssil_enabled = true
+volumetric_fog_enabled = true
 
 [node name="Main" type="Node3D" unique_id=1059331684]
 
@@ -19,18 +23,26 @@ sky = SubResource("Sky_yf5fn")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="Lighting" unique_id=1958231690]
 environment = SubResource("Environment_g4v7s")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lighting" unique_id=915686872]
-transform = Transform3D(1, 0, 0, 0, -0.20548598, 0.9786601, 0, -0.9786601, -0.205486, 0, 12.13024, 0)
-visible = false
+[node name="SpotLight3D" type="SpotLight3D" parent="Lighting" unique_id=417620788]
+transform = Transform3D(0.99949414, -0.0074510565, -0.030920675, 0.031414077, 0.079164445, 0.9963665, -0.004976165, -0.9968338, 0.07935846, -0.6113691, 4.3132925, -0.56686354)
+light_color = Color(0.8673385, 0.52616495, 0.07383973, 1)
+light_energy = 16.0
+light_volumetric_fog_energy = 7.259
+light_specular = 6.753
 shadow_enabled = true
+spot_range = 23.331
 
-[node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=1770082999]
-transform = Transform3D(1.6287448, 0, 0, 0, 1.6287448, 0, 0, 0, 1.6287448, -1.4392943, 0, 2.2390785)
-use_collision = true
-size = Vector3(30.076715, 1, 23.524744)
+[node name="OmniLight3D" type="OmniLight3D" parent="Lighting" unique_id=1347274450]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.7280554, 1.4587517, -3.2483678)
+light_color = Color(0.97393674, 0.57948405, 0, 1)
+light_specular = 1.24
+shadow_bias = 1.783
 
 [node name="ProtoController" parent="." unique_id=1591920305 instance=ExtResource("1_jjgbg")]
-transform = Transform3D(0.010155341, 0, -0.99994844, 0, 1, 0, 0.99994844, 0, 0.010155341, 0, 1.4305027, 0)
+transform = Transform3D(-0.7929479, 0, 0.10599054, 0, 0.79999983, 0, -0.10599054, 0, -0.7929479, 0, 0.42960882, -1.3858865)
 
-[node name="Node PC" parent="." unique_id=1969501692 instance=ExtResource("2_bo1nx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.277788, 1.9717555, -0.4559145)
+[node name="Room" parent="." unique_id=168670629 instance=ExtResource("2_8gbba")]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1183252285]
+stream = ExtResource("10_hptm8")
+autoplay = true

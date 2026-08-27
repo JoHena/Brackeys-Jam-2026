@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b6pi7kwxkneam"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_yf5fn"]
+viewport_path = NodePath("SubViewport")
+
+[resource]
+resource_local_to_scene = true
+vertex_color_use_as_albedo = true
+albedo_texture = SubResource("ViewportTexture_yf5fn")
+metallic = 0.6
+metallic_specular = 0.53
+emission_enabled = true
+emission_texture = SubResource("ViewportTexture_yf5fn")
+normal_scale = -16.0
+billboard_keep_scale = true
+grow_amount = -2.355
+point_size = 22.1

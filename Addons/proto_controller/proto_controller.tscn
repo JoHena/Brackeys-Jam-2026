@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bs72ogkvdd7d6"]
 
-[ext_resource type="Script" uid="uid://bdhriaexd33t3" path="res://addons/proto_controller/proto_controller.gd" id="1_ucva2"]
+[ext_resource type="Script" uid="uid://bdhriaexd33t3" path="res://Addons/proto_controller/proto_controller.gd" id="1_ucva2"]
+[ext_resource type="Shader" uid="uid://dwq5pbrdvfb1p" path="res://Addons/proto_controller/Camera.gdshader" id="2_mpk8l"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iof21"]
 albedo_color = Color(0.91806, 0.575202, 0.222449, 1)
@@ -16,8 +17,20 @@ height = 1.8
 [sub_resource type="SphereShape3D" id="SphereShape3D_g4v7s"]
 radius = 0.05
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_njsuj"]
+render_priority = 0
+shader = ExtResource("2_mpk8l")
+shader_parameter/pixel_size = 20.0
+shader_parameter/levels = 65.0
+shader_parameter/gamma = Vector2(2, 0)
+
+[sub_resource type="QuadMesh" id="QuadMesh_yf5fn"]
+material = SubResource("ShaderMaterial_njsuj")
+size = Vector2(2, 2)
+
 [node name="ProtoController" type="CharacterBody3D" unique_id=1848626188 groups=["Player"]]
 script = ExtResource("1_ucva2")
+base_speed = 3.5
 
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=1071691404]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -39,5 +52,16 @@ shape = SubResource("SphereShape3D_g4v7s")
 target_position = Vector3(0, 0, -2)
 collision_mask = 4
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Head/Camera3D" unique_id=1038126494]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.72398233)
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_yf5fn")
+
 [node name="Hand" type="Node3D" parent="Head" unique_id=1367121417]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.9947164)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1901930728]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2013614, 0)
+light_color = Color(0.52761275, 0.35242546, 0.11439509, 1)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=999067760]
