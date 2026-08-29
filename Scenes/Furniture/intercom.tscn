@@ -10,6 +10,7 @@ size = Vector3(0.026229858, 0.1013031, 0.09420776)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_1nq7g")
+dialogueSources = ["res://Dialogue/Intercom/IntercomIntro.json"]
 
 [node name="Model" parent="." unique_id=1117144492 instance=ExtResource("1_e5vip")]
 transform = Transform3D(0.22, 0, 0, 0, 0.44, 0, 0, 0, 0.44, 0, 0, 0)
@@ -28,5 +29,6 @@ shape = SubResource("BoxShape3D_g4v7s")
 transform = Transform3D(2.9802322e-08, 0, 1, 0, 1, 0, -1, 0, 2.9802322e-08, 0.080834866, -0.055195898, -0.058426023)
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=69204256]
+autoplay = true
 
 [editable path="Model"]

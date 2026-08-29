@@ -15,8 +15,13 @@ run/main_scene="uid://cqow47bch5ocs"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+CameraTransition="*uid://d1ov6akt0makq"
+
 [display]
 
+window/size/mode=3
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 

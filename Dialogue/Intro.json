@@ -1,0 +1,14 @@
+{
+	"Start": {
+		"text": "Ughhh.... ",
+		"name": "???",
+		"next": "Wakeup"
+	},
+	"Wakeup" : {
+		"text": "Where am I?",
+		"next": "WhatPlace"
+	},
+	"WhatPlace": {
+		"text": "What is this place??"
+	}
+}

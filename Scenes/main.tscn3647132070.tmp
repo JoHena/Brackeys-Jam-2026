@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://rwmkwo1i8nt5" path="res://Scenes/GameState.gd" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://Addons/proto_controller/proto_controller.tscn" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://cmsei1ulpnh8f" path="res://Scenes/Room.tscn" id="2_8gbba"]
-[ext_resource type="AudioStream" uid="uid://6ni3yuiiaaj2" path="res://SFX/talk_1.ogg" id="4_6bp64"]
 [ext_resource type="FontFile" uid="uid://crpolq620iv3" path="res://Dialogue/Silver.ttf" id="4_jjvhh"]
 [ext_resource type="Script" uid="uid://fc3wgdx7l6lj" path="res://Scenes/Dialogue.gd" id="4_kry3j"]
 [ext_resource type="AudioStream" uid="uid://cdwa2uanbo16v" path="res://SFX/Ambient.ogg" id="10_hptm8"]
@@ -113,6 +112,7 @@ volumetric_fog_albedo = Color(1, 0, 0.20000029, 1)
 script = ExtResource("1_21xkr")
 
 [node name="Dialogue" type="Control" parent="." unique_id=1962971361 node_paths=PackedStringArray("char_text", "timer")]
+visible = false
 layout_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
@@ -151,10 +151,6 @@ vertical_alignment = 1
 
 [node name="Timer" type="Timer" parent="Dialogue" unique_id=1649762270]
 
-[node name="DialoguePlayer" type="AudioStreamPlayer3D" parent="Dialogue" unique_id=406335250]
-stream = ExtResource("4_6bp64")
-pitch_scale = 0.7
-
 [node name="Menu" type="Control" parent="." unique_id=1236312131]
 layout_mode = 3
 anchors_preset = 0
@@ -181,7 +177,7 @@ transform = Transform3D(-0.44668174, -0.031934727, 0.89412284, -0.028976465, 0.9
 current = true
 
 [node name="CinematicCamera" type="Camera3D" parent="." unique_id=551245615]
-transform = Transform3D(0.085712455, -3.8184197e-08, -0.9963192, 0.99561596, 0.0375859, 0.08565183, 0.0374476, -0.9992927, 0.0032216175, -0.3499977, 0.082470655, -2.5715227)
+transform = Transform3D(0.085712455, -3.8184204e-08, -0.99631935, 0.99561596, 0.037585907, 0.085651845, 0.0374476, -0.99929285, 0.0032216182, -0.3499977, 0.082470655, -2.5715227)
 current = true
 fov = 39.4
 

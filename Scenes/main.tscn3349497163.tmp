@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://rwmkwo1i8nt5" path="res://Scenes/GameState.gd" id="1_21xkr"]
 [ext_resource type="PackedScene" uid="uid://bs72ogkvdd7d6" path="res://Addons/proto_controller/proto_controller.tscn" id="1_jjgbg"]
 [ext_resource type="PackedScene" uid="uid://cmsei1ulpnh8f" path="res://Scenes/Room.tscn" id="2_8gbba"]
-[ext_resource type="AudioStream" uid="uid://6ni3yuiiaaj2" path="res://SFX/talk_1.ogg" id="4_6bp64"]
 [ext_resource type="FontFile" uid="uid://crpolq620iv3" path="res://Dialogue/Silver.ttf" id="4_jjvhh"]
 [ext_resource type="Script" uid="uid://fc3wgdx7l6lj" path="res://Scenes/Dialogue.gd" id="4_kry3j"]
 [ext_resource type="AudioStream" uid="uid://cdwa2uanbo16v" path="res://SFX/Ambient.ogg" id="10_hptm8"]
@@ -112,77 +111,8 @@ volumetric_fog_albedo = Color(1, 0, 0.20000029, 1)
 [node name="Main" type="Node3D" unique_id=1059331684]
 script = ExtResource("1_21xkr")
 
-[node name="Dialogue" type="Control" parent="." unique_id=1962971361 node_paths=PackedStringArray("char_text", "timer")]
-layout_mode = 3
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
-script = ExtResource("4_kry3j")
-jsonsrc = "res://Dialogue/Intro.json"
-char_text = NodePath("RichTextLabel")
-timer = NodePath("Timer")
-
-[node name="ColorRect" type="ColorRect" parent="Dialogue" unique_id=1055027397]
-layout_mode = 0
-offset_left = -259.0
-offset_top = -94.0
-offset_right = 266.0
-offset_bottom = -54.0
-color = Color(0, 0, 0, 0.77254903)
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Dialogue" unique_id=485869723]
-layout_mode = 0
-offset_left = -259.0
-offset_top = -94.0
-offset_right = 266.0
-offset_bottom = -54.0
-theme_override_colors/default_color = Color(0.9599507, 0.5366537, 0.11335675, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_fonts/normal_font = ExtResource("4_jjvhh")
-theme_override_font_sizes/normal_font_size = 45
-text = "Hello!?!?! Anybody??!?"
-scroll_active = false
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Timer" type="Timer" parent="Dialogue" unique_id=1649762270]
-
-[node name="DialoguePlayer" type="AudioStreamPlayer3D" parent="Dialogue" unique_id=406335250]
-stream = ExtResource("4_6bp64")
-pitch_scale = 0.7
-
-[node name="Menu" type="Control" parent="." unique_id=1236312131]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 1154.0
-offset_bottom = 648.0
-
-[node name="Label" type="Label" parent="Menu" unique_id=1455481721]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -57.0
-offset_top = -152.0
-offset_right = 120.0
-offset_bottom = -129.0
-grow_horizontal = 2
-grow_vertical = 0
-text = "PRESS SPACE TO START"
-
-[node name="MenuCamera" type="Camera3D" parent="." unique_id=50957571]
-transform = Transform3D(-0.44668174, -0.031934727, 0.89412284, -0.028976465, 0.9993549, 0.021217296, -0.89422363, -0.016431138, -0.4473189, -2.1479535, 1.4602814, -0.8959439)
-current = true
-
 [node name="CinematicCamera" type="Camera3D" parent="." unique_id=551245615]
-transform = Transform3D(0.085712455, -3.8184197e-08, -0.9963192, 0.99561596, 0.0375859, 0.08565183, 0.0374476, -0.9992927, 0.0032216175, -0.3499977, 0.082470655, -2.5715227)
-current = true
+transform = Transform3D(0.08571245, -3.8184222e-08, -0.99631983, 0.9956159, 0.03758592, 0.08565188, 0.037447598, -0.9992933, 0.0032216196, -0.3499977, 0.082470655, -2.5715227)
 fov = 39.4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CinematicCamera" unique_id=1109243816]
@@ -213,9 +143,7 @@ spot_range = 23.331
 [node name="IntercomLight" type="AreaLight3D" parent="Lighting" unique_id=555329122]
 transform = Transform3D(-0.11140483, 0, -0.9937751, 0, 1, 0, 0.9937751, 0, -0.11140483, 1.8345194, 1.3855889, -3.3649487)
 light_color = Color(0.9091611, 0.5434754, 0.23992789, 1)
-light_energy = 4.704
-light_volumetric_fog_energy = 2.63
-light_specular = 0.704
+light_energy = 2.037
 area_size = Vector2(0.2946539, 0.2387507)
 
 [node name="LightPuzzleLight" type="AreaLight3D" parent="Lighting" unique_id=703605651]
@@ -246,7 +174,7 @@ shadow_enabled = true
 area_size = Vector2(0.5800593, 1)
 
 [node name="Player" parent="." unique_id=1591920305 instance=ExtResource("1_jjgbg")]
-transform = Transform3D(0.06856993, -3.091989e-08, -0.7970559, 0.012242973, 0.79990506, 0.0010532199, 0.7969619, -0.012288184, 0.068561845, -0.3805488, 0.4308691, -2.6381521)
+transform = Transform3D(0.06856993, -3.091989e-08, -0.7970559, 0.012242973, 0.79990506, 0.0010532199, 0.7969619, -0.012288184, 0.068561845, -0.38179168, 0.42960882, -2.6378436)
 visible = false
 
 [node name="Room" parent="." unique_id=168670629 instance=ExtResource("2_8gbba")]
@@ -255,4 +183,38 @@ visible = false
 stream = ExtResource("10_hptm8")
 autoplay = true
 
-[connection signal="timeout" from="Dialogue/Timer" to="Dialogue" method="_on_timer_timeout"]
+[node name="Control" type="Control" parent="." unique_id=1962971361 node_paths=PackedStringArray("char_text")]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("4_kry3j")
+jsonsrc = "res://Dialogue/Dialogue.json"
+char_text = NodePath("RichTextLabel")
+
+[node name="ColorRect" type="ColorRect" parent="Control" unique_id=1055027397]
+layout_mode = 0
+offset_left = -259.0
+offset_top = -94.0
+offset_right = 266.0
+offset_bottom = -54.0
+color = Color(0, 0, 0, 0.77254903)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control" unique_id=485869723]
+layout_mode = 0
+offset_left = -259.0
+offset_top = -94.0
+offset_right = 266.0
+offset_bottom = -54.0
+theme_override_colors/default_color = Color(0.9599507, 0.5366537, 0.11335675, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/normal_font = ExtResource("4_jjvhh")
+theme_override_font_sizes/normal_font_size = 45
+text = "Hello!?!?! Anybody??!?"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1

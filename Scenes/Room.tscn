@@ -6,10 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://bxsy3n0i40k4d" path="res://Models/Low Poly Furniture/Chairs/Chair D.fbx" id="4_l0f8h"]
 [ext_resource type="PackedScene" uid="uid://de2uqltwq1apm" path="res://Models/Low Poly Furniture/Shelves/Wall Shelf A.fbx" id="5_vofke"]
 [ext_resource type="PackedScene" uid="uid://d1ici6j58w8dh" path="res://Models/Low Poly Furniture/Lights/Ceiling Light.fbx" id="6_f1ah8"]
-[ext_resource type="PackedScene" uid="uid://cbyva7esu7b73" path="res://Models/Low Poly Furniture/Beds/Bed Single.fbx" id="7_0sh5y"]
 [ext_resource type="PackedScene" uid="uid://cjv2e1gdvyg20" path="res://Models/Low Poly Furniture/Doors/Door B.fbx" id="8_b7nhj"]
 [ext_resource type="PackedScene" uid="uid://cvskn7pjdkebr" path="res://Scenes/Furniture/PcScene.tscn" id="9_vtib3"]
 [ext_resource type="PackedScene" uid="uid://deajnerle7if0" path="res://Scenes/Furniture/intercom.tscn" id="10_ijr7e"]
+[ext_resource type="PackedScene" uid="uid://bakhfle4w5jfd" path="res://Scenes/Puzzles/LightPuzzle.tscn" id="11_l0f8h"]
+[ext_resource type="PackedScene" uid="uid://c164xio57yhjk" path="res://Scenes/Puzzles/CirclePuzzle.tscn" id="12_l0f8h"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fdnlq"]
 resource_name = "wall"
@@ -152,8 +153,8 @@ size = Vector3(0.07951888, 0.02, 0.017732829)
 [sub_resource type="BoxShape3D" id="BoxShape3D_khqja"]
 size = Vector3(0.07951888, 0.02, 0.017732829)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_mimag"]
-size = Vector3(0.04960639, 0.11097898, 0.020653749)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dgula"]
+emission_energy_multiplier = 16.0
 
 [node name="Room" type="Node3D" unique_id=59022931]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
@@ -210,25 +211,35 @@ shape = SubResource("BoxShape3D_khqja")
 [node name="Ceiling Light" parent="Furniture" unique_id=386874155 instance=ExtResource("6_f1ah8")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.60565674, 4.3905897, -0.589653)
 
-[node name="Bed Single" parent="Furniture" unique_id=192347031 instance=ExtResource("7_0sh5y")]
-transform = Transform3D(-8.742278e-09, 0, 0.20343164, 0, 0.48677194, 0, -0.2, 0, -8.892279e-09, -2.292721, 0.2704805, -2.959475)
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Furniture/Bed Single/Bed single" parent_id_path=PackedInt32Array(192347031, 238745525) index="0" unique_id=1025363464]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.4892694e-05, -0.008673262, 0.0036109295)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Furniture/Bed Single/Bed single/StaticBody3D" unique_id=1049010810]
-transform = Transform3D(1, -8.9173113e-13, -1.054556e-19, 3.5527137e-15, 1, 4.2632564e-14, -1.0587912e-19, 2.2777603e-22, 0.9999998, 0, 0, -0.0075192563)
-shape = SubResource("BoxShape3D_mimag")
-
 [node name="Door B" parent="Furniture" unique_id=1964557064 instance=ExtResource("8_b7nhj")]
 transform = Transform3D(-8.742278e-09, 0, -0.2, 0, 0.2, 0, 0.2, 0, -8.742278e-09, -3.2179005, 0.9906645, 0.5150123)
 
-[node name="PC" parent="." unique_id=1427728777 instance=ExtResource("9_vtib3")]
-transform = Transform3D(0.49999568, -0.0019008999, -0.00082819536, 0.0019010772, 0.49999636, 0.000105486215, 0.00082779303, -0.00010863537, 0.49999928, 0.70251006, 0.06715369, 0.47854286)
+[node name="LightFixture" type="CSGBox3D" parent="Furniture" unique_id=1518265684]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.26366, 1.8723354, -0.41451952)
+size = Vector3(0.140625, 0.07324219, 0.22460938)
+material = SubResource("StandardMaterial3D_dgula")
 
-[node name="Intercom" parent="." unique_id=1819134661 instance=ExtResource("10_ijr7e")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0.98211205, 0.7497062, -1.7376637)
+[node name="CSGSphere3D" type="CSGSphere3D" parent="Furniture/LightFixture" unique_id=833525836]
+transform = Transform3D(0.3, 0, 0, 0, 0.16407555, 0, 0, 0, 0.1707232, 0, 0.0024871826, -0.15407911)
+operation = 2
+
+[node name="CSGSphere3D2" type="CSGSphere3D" parent="Furniture/LightFixture" unique_id=460117878]
+transform = Transform3D(0.3, 0, 0, 0, 0.16407555, 0, 0, 0, 0.1707232, 0, 0.0024871826, 0.15404919)
+operation = 2
+
+[node name="Puzzles" type="Node" parent="." unique_id=2105888593]
+
+[node name="LightPuzzle" parent="Puzzles" unique_id=1872927672 instance=ExtResource("11_l0f8h")]
+transform = Transform3D(-1.3113416e-08, 0, -0.29999998, 0, 0.29999998, 0, 0.29999998, 0, -1.3113416e-08, 1.9568417, 0.7479689, -1.9324607)
+
+[node name="CirclePuzzle" parent="Puzzles" unique_id=47252897 instance=ExtResource("12_l0f8h")]
+transform = Transform3D(-4.371139e-09, 0.1, 0, -0.1, -4.371139e-09, 0, 0, 0, 0.1, -3.2334878, 1.4624074, -0.4138386)
+
+[node name="PC" parent="Puzzles" unique_id=1427728777 instance=ExtResource("9_vtib3")]
+transform = Transform3D(0.99999136, -0.0038017998, -0.0016563907, 0.0038021544, 0.9999927, 0.00021097243, 0.0016555861, -0.00021727075, 0.99999857, 1.4050201, 0.13430738, 0.9570857)
+
+[node name="Intercom" parent="Puzzles" unique_id=1819134661 instance=ExtResource("10_ijr7e")]
+transform = Transform3D(-2, 0, -1.7484555e-07, 0, 2, 0, 1.7484555e-07, 0, -2, 1.9642241, 1.4994124, -3.4753275)
 
 [editable path="Furniture/Wall Shelf A"]
 [editable path="Furniture/Wall Shelf A2"]
-[editable path="Furniture/Bed Single"]

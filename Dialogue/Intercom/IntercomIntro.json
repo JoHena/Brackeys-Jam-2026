@@ -1,0 +1,11 @@
+{
+	"Start": {
+		"text": "Hello??? Anybody there??",
+		"next": "ResponseStart",
+		"src" : "talk_1.ogg"
+	},
+	"ResponseStart" : {
+		"text": "H-Hello?",
+		"src" : "talk_1.ogg"
+	},
+}

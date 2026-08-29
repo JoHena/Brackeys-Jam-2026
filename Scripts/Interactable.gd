@@ -4,7 +4,9 @@ class_name Interactable
 ## into a dedicated camera view for (PC, intercom, etc).
 ##
 ## Handles:
-##   - swapping to this object's Camera3D while in use
+##   - swapping to this object's Camera3D while in use, smoothed by the
+##     shared CameraTransition autoload (falls back to an instant cut if
+##     that autoload isn't present, so this still works standalone)
 ##   - toggling player movement/interaction state
 ##   - the common ui_cancel-to-exit and Interact-click flow
 ##   - playing the click SFX
@@ -14,10 +16,13 @@ class_name Interactable
 
 ## Emitted whenever the interactable is turned on/off, so external systems
 ## (like the Player) can react without this class needing to know their
-## internals.
+## internals. Fires after the camera transition has fully completed.
 signal interaction_toggled(active: bool)
 
 @export var click_sfx: AudioStream = preload("res://SFX/mouse_click_1.ogg")
+## How long the fade-based camera transition takes. Ignored if the
+## CameraTransition autoload isn't present (instant cut instead).
+@export var transition_duration: float = 0.25
 
 @export_group("Pointer")
 ## Turn off for interactables that already have their own cursor (e.g. the
@@ -34,11 +39,17 @@ signal interaction_toggled(active: bool)
 ## World units the pointer moves per pixel of mouse motion.
 @export var pointer_sensitivity: float = 0.002
 
+@export var pointer_size: float = 0.01
+
 @onready var camera_3d: Camera3D = $InteractableCamera
 @onready var audio_player: AudioStreamPlayer3D = $AudioStreamPlayer3D
 
 var player: Player
 var is_using: bool = false
+## True for the duration of a camera fade — blocks re-entrant toggle_use()
+## calls (e.g. spam-clicking) so is_using can never desync from what
+## camera_3d.current actually shows.
+var is_transitioning: bool = false
 var pointer: Sprite3D
 var pointer_local_offset: Vector2
 
@@ -53,6 +64,7 @@ func _ready() -> void:
 	if use_pointer and pointer_scene:
 		pointer = pointer_scene.instantiate()
 		add_child(pointer)
+		pointer.pixel_size = pointer_size
 		pointer.no_depth_test = true
 		pointer.visible = false
 
@@ -61,22 +73,53 @@ func _ready() -> void:
 	interaction_toggled.connect(_on_interaction_toggled)
 
 
+## Now routes the actual camera swap through CameraTransition (if the
+## autoload is registered) so entering/exiting an Interactable fades
+## instead of cutting, same as the intro cinematic. Guarded by
+## is_transitioning so a second call while fading is simply ignored.
 func toggle_use() -> void:
-	is_using = !is_using
-	camera_3d.current = is_using
-	set_process_input(is_using)
+	player.visible = is_using
+	if is_transitioning:
+		return
+	is_transitioning = true
+
+	var going_active := not is_using
+
+	var transitioner = get_node_or_null("/root/CameraTransition")
+	if transitioner:
+		await transitioner.switch_camera(func(): _apply_use_state(going_active), transition_duration)
+	else:
+		_apply_use_state(going_active)
+
+	is_transitioning = false
+
+
+## The actual state flip that used to live directly in toggle_use() —
+## split out so it can be handed to CameraTransition as a callback.
+func _apply_use_state(active: bool) -> void:
+	is_using = active
+
+	# Setting current = false here would leave Godot to auto-pick whatever
+	# camera it finds first in the scene (often not the player's) — so on
+	# exit, explicitly reactivate the player's camera instead.
+	if active:
+		camera_3d.current = true
+	elif player:
+		player.activate_camera()
+
+	set_process_input(active)
 
 	if pointer:
-		pointer.visible = is_using and use_pointer
-		if is_using:
+		pointer.visible = active and use_pointer
+		if active:
 			_reset_pointer_transform()
 
-	if is_using:
+	if active:
 		_on_activated()
 	else:
 		_on_deactivated()
 
-	interaction_toggled.emit(is_using)
+	interaction_toggled.emit(active)
 
 
 ## Snaps the pointer to camera_3d's rotation, centered on the flat plane
@@ -118,8 +161,8 @@ func _pointer_plane_position(offset: Vector2) -> Vector3:
 func _on_interaction_toggled(active: bool) -> void:
 	if player == null:
 		return
-	player.IsInteracting = active
-	player.can_move = !active
+	player.is_interacting = active
+	player.can_move = not active
 
 
 func _input(event: InputEvent) -> void:

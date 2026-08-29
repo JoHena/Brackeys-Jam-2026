@@ -68,6 +68,9 @@ resource_name = "kb_3"
 cull_mode = 2
 albedo_color = Color(0.96262634, 0.23323359, 0, 0.48235294)
 roughness = 0.81249994
+emission_enabled = true
+emission = Color(1, 0, 0.14999962, 1)
+emission_energy_multiplier = 16.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_huhhe"]
 _surfaces = [{
@@ -236,14 +239,6 @@ size = Vector3(0.8462391, 0.75158453, 1.0385971)
 [node name="Node PC" type="StaticBody3D" unique_id=1427728777]
 collision_layer = 4
 script = ExtResource("1_nbb70")
-
-[node name="AreaLight3D" type="AreaLight3D" parent="." unique_id=653205156]
-transform = Transform3D(0.020957919, -0.9993963, -0.027708536, 0.9906047, 0.017011395, 0.13569427, -0.13514099, -0.030292075, 0.99036324, -0.38007355, 1.1050078, 0.5081495)
-light_color = Color(0, 0.8600749, 0.8673802, 1)
-light_energy = 6.63
-light_size = 1.0
-shadow_enabled = true
-area_size = Vector2(0.5800593, 1)
 
 [node name="computer_v3" type="Node3D" parent="." unique_id=909085144]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -0.3928895, 0.92919683, 0)
