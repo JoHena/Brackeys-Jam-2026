@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://b3dlhgxi5qu02"]
+
+[ext_resource type="PackedScene" uid="uid://bwsyrfupqhsny" path="res://Models/Puzzles/framed_painting.glb" id="1_8ojxb"]
+
+[node name="Sketchfab_Scene" unique_id=168678008 instance=ExtResource("1_8ojxb")]

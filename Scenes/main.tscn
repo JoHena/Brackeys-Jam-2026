@@ -181,7 +181,7 @@ transform = Transform3D(-0.44668174, -0.031934727, 0.89412284, -0.028976465, 0.9
 current = true
 
 [node name="CinematicCamera" type="Camera3D" parent="." unique_id=551245615]
-transform = Transform3D(0.085712455, -3.8184197e-08, -0.9963192, 0.99561596, 0.0375859, 0.08565183, 0.0374476, -0.9992927, 0.0032216175, -0.3499977, 0.082470655, -2.5715227)
+transform = Transform3D(0.085712455, -3.818419e-08, -0.996319, 0.99561596, 0.03758589, 0.085651815, 0.0374476, -0.9992925, 0.003221617, -0.3499977, 0.082470655, -2.5715227)
 current = true
 fov = 39.4
 
@@ -245,9 +245,16 @@ light_specular = 16.0
 shadow_enabled = true
 area_size = Vector2(0.5800593, 1)
 
+[node name="Painting" type="AreaLight3D" parent="Lighting" unique_id=1080030779]
+transform = Transform3D(-0.051654395, -0.99836016, -0.024676694, 0.26952502, -0.037729274, 0.962254, -0.96160704, 0.04305366, 0.27103195, -0.8013577, 2.1052027, -3.4661272)
+light_color = Color(0, 0.76540405, 0.3149964, 1)
+light_energy = 16.0
+light_volumetric_fog_energy = 11.455
+light_size = 0.55
+area_size = Vector2(0.2946539, 0.2387507)
+
 [node name="Player" parent="." unique_id=1591920305 instance=ExtResource("1_jjgbg")]
 transform = Transform3D(0.06856993, -3.091989e-08, -0.7970559, 0.012242973, 0.79990506, 0.0010532199, 0.7969619, -0.012288184, 0.068561845, -0.3805488, 0.4308691, -2.6381521)
-visible = false
 
 [node name="Room" parent="." unique_id=168670629 instance=ExtResource("2_8gbba")]
 

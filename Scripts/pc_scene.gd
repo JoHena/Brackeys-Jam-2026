@@ -13,6 +13,8 @@ func _on_activated() -> void:
 	pc_controller.mouse_pos = sub_viewport.size / 2.0
 	pc_controller.update_cursor_pos()
 
+	pc_controller.spawn_windows()
+
 
 func _on_interact_input(event: InputEvent) -> void:
 	sub_viewport.push_input(event)

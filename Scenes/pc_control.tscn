@@ -1,9 +1,12 @@
 [gd_scene format=3 uid="uid://cm7152dxi5m2v"]
 
+[ext_resource type="Theme" uid="uid://bi54ign8ggomc" path="res://Themes/Classic95/Classic95.tres" id="1_5qjw6"]
 [ext_resource type="Script" uid="uid://bv3ljm7syle4d" path="res://Scripts/pc_control.gd" id="1_8e2e7"]
 [ext_resource type="Texture2D" uid="uid://b4sgob4qwlotx" path="res://Models/Pc_BG.jpg" id="1_s37md"]
 [ext_resource type="Texture2D" uid="uid://c7kp45j78kml5" path="res://Cursor79.png" id="2_sh26r"]
 [ext_resource type="Shader" uid="uid://r0gpbajjeqfy" path="res://Shaders/CRT.gdshader" id="4_7syg2"]
+[ext_resource type="StyleBox" uid="uid://dlg1ufs1ksikh" path="res://Themes/Classic311/Styles/Panel/TabForeground.tres" id="6_61ech"]
+[ext_resource type="StyleBox" uid="uid://b18yybjdaixt5" path="res://Themes/Classic311/Styles/Panel/TabBackground.tres" id="7_5e78l"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5qjw6"]
 shader = ExtResource("4_7syg2")
@@ -35,6 +38,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 800.0
 offset_bottom = 507.0
+theme = ExtResource("1_5qjw6")
 script = ExtResource("1_8e2e7")
 
 [node name="Background" type="TextureRect" parent="." unique_id=1018922831]
@@ -54,3 +58,66 @@ material = SubResource("ShaderMaterial_5qjw6")
 layout_mode = 0
 offset_right = 803.0
 offset_bottom = 512.0
+
+[node name="PCAlert" type="Control" parent="." unique_id=433786995]
+anchors_preset = 0
+offset_left = 76.0
+offset_top = 120.0
+offset_right = 116.0
+offset_bottom = 160.0
+
+[node name="Panel" type="Panel" parent="PCAlert" unique_id=581776341]
+layout_mode = 1
+offset_right = 200.0
+offset_bottom = 167.0
+theme_override_styles/panel = ExtResource("6_61ech")
+
+[node name="ColorRect" type="Panel" parent="PCAlert/Panel" unique_id=857197442]
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 23.0
+theme = ExtResource("1_5qjw6")
+theme_override_styles/panel = ExtResource("7_5e78l")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PCAlert/Panel/ColorRect" unique_id=441888562]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -10.5
+offset_right = 20.0
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_force_pass_scroll_events = false
+text = "Alert"
+scroll_active = false
+
+[node name="ColorRect2" type="ColorRect" parent="PCAlert/Panel" unique_id=1028983416]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 33.0
+offset_right = 193.0
+offset_bottom = 156.0
+color = Color(0.70380783, 0.70380783, 0.70380783, 1)
+
+[node name="Button" type="Button" parent="PCAlert" unique_id=783609738]
+layout_mode = 0
+offset_left = 39.0
+offset_top = 113.0
+offset_right = 156.0
+offset_bottom = 149.0
+text = "Ok"
+
+[node name="LineEdit" type="LineEdit" parent="PCAlert" unique_id=1681342129]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 48.0
+offset_right = 173.0
+offset_bottom = 86.0
+text = "Dont Trust Anyone"
+alignment = 1
+editable = false

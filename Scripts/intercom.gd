@@ -3,6 +3,7 @@ class_name Intercom
 
 @export var tone: AudioStream
 @export var dialogueSources : Array
+
 @onready var dialogue = get_node("/root/Main/Dialogue")
 
 var IsFirstTimeUse = true
@@ -13,6 +14,7 @@ func _on_activated() -> void:
 
 	if IsFirstTimeUse:
 		dialogue.load_new_src(dialogueSources[0])
+		IsFirstTimeUse = false
 
 func _on_deactivated() -> void:
 	pass
