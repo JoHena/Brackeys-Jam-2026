@@ -95,7 +95,9 @@ func _input(_event: InputEvent) -> void:
 	if is_interacting:
 		pointer.visible = false
 		return
-
+	
+	# start interaction with interactable
+	# end is in Interactable.gd
 	if Input.is_action_just_pressed("Interact"):
 		if shape_cast_3d.is_colliding():
 			var collided = shape_cast_3d.get_collision_result()[0]["collider"]

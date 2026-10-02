@@ -151,11 +151,11 @@ func _update_pointer_position(event: InputEventMouseMotion) -> void:
 ## Converts a local (x = right, y = up) offset into a world position on
 ## the flat plane pointer_distance in front of camera_3d.
 func _pointer_plane_position(offset: Vector2) -> Vector3:
-	var basis := camera_3d.global_transform.basis
+	var _basis := camera_3d.global_transform.basis
 	return camera_3d.global_position \
-		- basis.z * pointer_distance \
-		+ basis.x * offset.x \
-		+ basis.y * offset.y
+		- _basis.z * pointer_distance \
+		+ _basis.x * offset.x \
+		+ _basis.y * offset.y
 
 
 func _on_interaction_toggled(active: bool) -> void:
@@ -168,7 +168,9 @@ func _on_interaction_toggled(active: bool) -> void:
 func _input(event: InputEvent) -> void:
 	if not is_using:
 		return
-
+	
+	# end interaction with interactable
+	# start is in proto_controller.gd
 	if event.is_action_pressed("ui_cancel"):
 		toggle_use()
 		get_viewport().set_input_as_handled()
