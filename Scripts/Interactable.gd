@@ -52,6 +52,8 @@ var is_using: bool = false
 var is_transitioning: bool = false
 var pointer: Sprite3D
 var pointer_local_offset: Vector2
+# scale multiplier for pointer_sensitivity to bypass minimum sensitivity value
+var pointer_sensitivity_scale: float = 0.5
 
 
 func _ready() -> void:
@@ -142,8 +144,8 @@ func _update_pointer_position(event: InputEventMouseMotion) -> void:
 	# flat plane fixed in front of the camera, so it moves like a 2D
 	# cursor regardless of FOV or viewport size. event.relative is used
 	# (not event.position) since position freezes in MOUSE_MODE_CAPTURED.
-	pointer_local_offset.x += event.relative.x * pointer_sensitivity
-	pointer_local_offset.y -= event.relative.y * pointer_sensitivity
+	pointer_local_offset.x += event.relative.x * pointer_sensitivity * pointer_sensitivity_scale
+	pointer_local_offset.y -= event.relative.y * pointer_sensitivity * pointer_sensitivity_scale
 	pointer.global_position = _pointer_plane_position(pointer_local_offset)
 	pointer.global_rotation = camera_3d.global_rotation
 
