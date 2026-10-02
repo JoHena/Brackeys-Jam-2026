@@ -206,11 +206,11 @@ func _on_deactivated() -> void:
 ## Called when the "Interact" action is pressed while in use, right after
 ## the click SFX plays. Override to forward the click (e.g. into a
 ## SubViewport).
-func _on_interact_input(event: InputEvent) -> void:
+func _on_interact_input(_event: InputEvent) -> void:
 	pass
 
 
 ## Called for any input while in use that isn't ui_cancel or an Interact
 ## press (e.g. mouse motion). Override for things like cursor dragging.
-func _on_other_input(event: InputEvent) -> void:
+func _on_other_input(_event: InputEvent) -> void:
 	pass

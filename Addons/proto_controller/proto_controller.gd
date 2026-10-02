@@ -83,7 +83,7 @@ func activate_camera() -> void:
 	camera_3d.current = true
 
 
-func _input(event: InputEvent) -> void:
+func _input(_event: InputEvent) -> void:
 	if is_animation_playing:
 		return
 
@@ -110,6 +110,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	# Mouse capturing
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		capture_mouse()
+		#release_mouse()
 	if Input.is_key_pressed(KEY_ESCAPE):
 		pass
 		#release_mouse()

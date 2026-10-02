@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c7kp45j78kml5" path="res://Cursor79.png" id="2_sh26r"]
 [ext_resource type="Shader" uid="uid://r0gpbajjeqfy" path="res://Shaders/CRT.gdshader" id="4_7syg2"]
 [ext_resource type="StyleBox" uid="uid://dlg1ufs1ksikh" path="res://Themes/Classic311/Styles/Panel/TabForeground.tres" id="6_61ech"]
+[ext_resource type="Script" uid="uid://cmjx6jseponc2" path="res://Scripts/pc_alert.gd" id="6_rndhe"]
 [ext_resource type="StyleBox" uid="uid://b18yybjdaixt5" path="res://Themes/Classic311/Styles/Panel/TabBackground.tres" id="7_5e78l"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5qjw6"]
@@ -38,6 +39,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 800.0
 offset_bottom = 507.0
+mouse_filter = 1
 theme = ExtResource("1_5qjw6")
 script = ExtResource("1_8e2e7")
 
@@ -58,6 +60,7 @@ material = SubResource("ShaderMaterial_5qjw6")
 layout_mode = 0
 offset_right = 803.0
 offset_bottom = 512.0
+mouse_filter = 1
 
 [node name="PCAlert" type="Control" parent="." unique_id=433786995]
 anchors_preset = 0
@@ -65,21 +68,24 @@ offset_left = 76.0
 offset_top = 120.0
 offset_right = 116.0
 offset_bottom = 160.0
+mouse_filter = 1
+script = ExtResource("6_rndhe")
 
 [node name="Panel" type="Panel" parent="PCAlert" unique_id=581776341]
 layout_mode = 1
 offset_right = 200.0
 offset_bottom = 167.0
+mouse_filter = 1
 theme_override_styles/panel = ExtResource("6_61ech")
 
-[node name="ColorRect" type="Panel" parent="PCAlert/Panel" unique_id=857197442]
+[node name="DragBar" type="Panel" parent="PCAlert/Panel" unique_id=857197442]
 layout_mode = 0
 offset_right = 200.0
 offset_bottom = 23.0
 theme = ExtResource("1_5qjw6")
 theme_override_styles/panel = ExtResource("7_5e78l")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="PCAlert/Panel/ColorRect" unique_id=441888562]
+[node name="RichTextLabel" type="RichTextLabel" parent="PCAlert/Panel/DragBar" unique_id=441888562]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
