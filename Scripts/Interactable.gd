@@ -52,6 +52,8 @@ var is_using: bool = false
 var is_transitioning: bool = false
 var pointer: Sprite3D
 var pointer_local_offset: Vector2
+# scale multiplier for pointer_sensitivity to bypass minimum sensitivity value
+var pointer_sensitivity_scale: float = 0.5
 
 
 func _ready() -> void:
@@ -142,8 +144,8 @@ func _update_pointer_position(event: InputEventMouseMotion) -> void:
 	# flat plane fixed in front of the camera, so it moves like a 2D
 	# cursor regardless of FOV or viewport size. event.relative is used
 	# (not event.position) since position freezes in MOUSE_MODE_CAPTURED.
-	pointer_local_offset.x += event.relative.x * pointer_sensitivity
-	pointer_local_offset.y -= event.relative.y * pointer_sensitivity
+	pointer_local_offset.x += event.relative.x * pointer_sensitivity * pointer_sensitivity_scale
+	pointer_local_offset.y -= event.relative.y * pointer_sensitivity * pointer_sensitivity_scale
 	pointer.global_position = _pointer_plane_position(pointer_local_offset)
 	pointer.global_rotation = camera_3d.global_rotation
 
@@ -151,11 +153,11 @@ func _update_pointer_position(event: InputEventMouseMotion) -> void:
 ## Converts a local (x = right, y = up) offset into a world position on
 ## the flat plane pointer_distance in front of camera_3d.
 func _pointer_plane_position(offset: Vector2) -> Vector3:
-	var basis := camera_3d.global_transform.basis
+	var _basis := camera_3d.global_transform.basis
 	return camera_3d.global_position \
-		- basis.z * pointer_distance \
-		+ basis.x * offset.x \
-		+ basis.y * offset.y
+		- _basis.z * pointer_distance \
+		+ _basis.x * offset.x \
+		+ _basis.y * offset.y
 
 
 func _on_interaction_toggled(active: bool) -> void:
@@ -168,7 +170,9 @@ func _on_interaction_toggled(active: bool) -> void:
 func _input(event: InputEvent) -> void:
 	if not is_using:
 		return
-
+	
+	# end interaction with interactable
+	# start is in proto_controller.gd
 	if event.is_action_pressed("ui_cancel"):
 		toggle_use()
 		get_viewport().set_input_as_handled()
@@ -206,11 +210,11 @@ func _on_deactivated() -> void:
 ## Called when the "Interact" action is pressed while in use, right after
 ## the click SFX plays. Override to forward the click (e.g. into a
 ## SubViewport).
-func _on_interact_input(event: InputEvent) -> void:
+func _on_interact_input(_event: InputEvent) -> void:
 	pass
 
 
 ## Called for any input while in use that isn't ui_cancel or an Interact
 ## press (e.g. mouse motion). Override for things like cursor dragging.
-func _on_other_input(event: InputEvent) -> void:
+func _on_other_input(_event: InputEvent) -> void:
 	pass

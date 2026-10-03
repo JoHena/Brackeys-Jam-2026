@@ -23,7 +23,7 @@ pointer_size = null
 [node name="Model" parent="." unique_id=1117144492 instance=ExtResource("1_e5vip")]
 transform = Transform3D(0.22, 0, 0, 0, 0.44, 0, 0, 0, 0.44, 0, 0, 0)
 
-[node name="intercom_LP" parent="Model" index="0" unique_id=176015403]
+[node name="intercom_LP" parent="Model" index="0" unique_id=1309778626]
 transform = Transform3D(1, 0, -1.1368684e-13, 0, 1, 0, 2.842171e-14, 0, 1, -0.061265945, -0.12647426, -0.1429801)
 
 [node name="TalkingCamera" type="Camera3D" parent="Model" unique_id=1769656372]

@@ -83,7 +83,7 @@ func activate_camera() -> void:
 	camera_3d.current = true
 
 
-func _input(event: InputEvent) -> void:
+func _input(_event: InputEvent) -> void:
 	if is_animation_playing:
 		return
 
@@ -95,7 +95,9 @@ func _input(event: InputEvent) -> void:
 	if is_interacting:
 		pointer.visible = false
 		return
-
+	
+	# start interaction with interactable
+	# end is in Interactable.gd
 	if Input.is_action_just_pressed("Interact"):
 		if shape_cast_3d.is_colliding():
 			var collided = shape_cast_3d.get_collision_result()[0]["collider"]
@@ -110,8 +112,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	# Mouse capturing
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		capture_mouse()
+		#release_mouse()
 	if Input.is_key_pressed(KEY_ESCAPE):
-		release_mouse()
+		pass
+		#release_mouse()
 
 	# Look around
 	if not is_interacting:

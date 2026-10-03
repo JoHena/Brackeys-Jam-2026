@@ -15,7 +15,7 @@ var StartPressed = false
 func _ready() -> void:
 	menu_camera.current = true
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if !StartPressed:
 		if Input.is_action_just_pressed("ui_accept"):
 			menu_control.visible = false
