@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://6ni3yuiiaaj2" path="res://SFX/talk_1.ogg" id="4_6bp64"]
 [ext_resource type="FontFile" uid="uid://crpolq620iv3" path="res://Dialogue/Silver.ttf" id="4_jjvhh"]
 [ext_resource type="Script" uid="uid://fc3wgdx7l6lj" path="res://Scenes/Dialogue.gd" id="4_kry3j"]
+[ext_resource type="PackedScene" uid="uid://cs7gfp364s7se" path="res://Scenes/UI/PauseMenu.tscn" id="5_344ge"]
 [ext_resource type="AudioStream" uid="uid://cdwa2uanbo16v" path="res://SFX/Ambient.ogg" id="10_hptm8"]
 
 [sub_resource type="Animation" id="Animation_kry3j"]
@@ -176,12 +177,14 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "PRESS SPACE TO START"
 
+[node name="PauseMenu" parent="." unique_id=1341252559 instance=ExtResource("5_344ge")]
+
 [node name="MenuCamera" type="Camera3D" parent="." unique_id=50957571]
 transform = Transform3D(-0.44668174, -0.031934727, 0.89412284, -0.028976465, 0.9993549, 0.021217296, -0.89422363, -0.016431138, -0.4473189, -2.1479535, 1.4602814, -0.8959439)
 current = true
 
 [node name="CinematicCamera" type="Camera3D" parent="." unique_id=551245615]
-transform = Transform3D(0.085712455, -3.818419e-08, -0.99631894, 0.99561596, 0.037585888, 0.08565181, 0.0374476, -0.99929243, 0.0032216168, -0.3499977, 0.082470655, -2.5715227)
+transform = Transform3D(0.085712455, -3.818418e-08, -0.99631864, 0.99561596, 0.037585877, 0.085651785, 0.0374476, -0.99929214, 0.003221616, -0.3499977, 0.082470655, -2.5715227)
 current = true
 fov = 39.4
 

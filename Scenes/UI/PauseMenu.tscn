@@ -1,0 +1,110 @@
+[gd_scene format=3 uid="uid://cs7gfp364s7se"]
+
+[ext_resource type="Texture2D" uid="uid://xucyka6aykax" path="res://Textures/UI/pause_gradient.png" id="1_eod5q"]
+[ext_resource type="Script" uid="uid://dwixy3ad1fmv7" path="res://Scripts/PauseMenu.gd" id="1_n4i8v"]
+[ext_resource type="Texture2D" uid="uid://c8aad27rgh8yb" path="res://Textures/UI/red_gradient_ui_button.png" id="3_238ko"]
+[ext_resource type="FontFile" uid="uid://dc8by4tv176p3" path="res://Fonts/SyneMono-Regular.ttf" id="4_2bpff"]
+
+[node name="PauseMenu" type="Control" unique_id=1341252559]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_n4i8v")
+
+[node name="SquareGradientTexture" type="TextureRect" parent="." unique_id=998649162]
+modulate = Color(1, 1, 1, 0.78431374)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_eod5q")
+expand_mode = 1
+
+[node name="ButtonsVBox" type="VBoxContainer" parent="." unique_id=510510965]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_top = 0.2
+anchor_right = 0.35
+anchor_bottom = 0.8
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="ResumeButton" type="TextureButton" parent="ButtonsVBox" unique_id=1595872547]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+texture_pressed = ExtResource("3_238ko")
+texture_hover = ExtResource("3_238ko")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="RichTextLabel" parent="ButtonsVBox/ResumeButton" unique_id=1799560232]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("4_2bpff")
+theme_override_font_sizes/normal_font_size = 60
+text = "Resume"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="SettingsButton" type="TextureButton" parent="ButtonsVBox" unique_id=1984105271]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+texture_pressed = ExtResource("3_238ko")
+texture_hover = ExtResource("3_238ko")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="RichTextLabel" parent="ButtonsVBox/SettingsButton" unique_id=1558676965]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("4_2bpff")
+theme_override_font_sizes/normal_font_size = 60
+text = "Settings"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="QuitButton" type="TextureButton" parent="ButtonsVBox" unique_id=194013990]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+texture_pressed = ExtResource("3_238ko")
+texture_hover = ExtResource("3_238ko")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="RichTextLabel" parent="ButtonsVBox/QuitButton" unique_id=1115088486]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.05
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("4_2bpff")
+theme_override_font_sizes/normal_font_size = 60
+text = "Quit"
+scroll_active = false
+vertical_alignment = 1
+
+[connection signal="pressed" from="ButtonsVBox/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="ButtonsVBox/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="ButtonsVBox/QuitButton" to="." method="_on_quit_button_pressed"]
