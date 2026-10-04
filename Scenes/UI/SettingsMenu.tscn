@@ -1,0 +1,117 @@
+[gd_scene format=3 uid="uid://dro2kmcfmt7ba"]
+
+[ext_resource type="FontFile" uid="uid://dc8by4tv176p3" path="res://Fonts/SyneMono-Regular.ttf" id="1_gne0f"]
+[ext_resource type="Script" uid="uid://dnskpdlmjn4bo" path="res://Scripts/UI/Settings.gd" id="1_owj4x"]
+[ext_resource type="Texture2D" uid="uid://bqltxbkdlx104" path="res://Textures/UI/divider-fade-001.png" id="1_q4b8a"]
+[ext_resource type="Texture2D" uid="uid://c8aad27rgh8yb" path="res://Textures/UI/red_gradient_ui_button.png" id="3_mw62m"]
+[ext_resource type="Texture2D" uid="uid://0uw8px0wj5ln" path="res://Textures/UI/reset_icon.png" id="5_3hh3s"]
+
+[node name="SettingsMenu" type="Control" unique_id=548582870]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_owj4x")
+
+[node name="DividerTexture1" type="TextureRect" parent="." unique_id=129810483]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.15
+anchor_right = 0.525
+anchor_bottom = 0.225
+texture = ExtResource("1_q4b8a")
+
+[node name="DividerTexture2" type="TextureRect" parent="." unique_id=843224085]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.475
+anchor_top = 0.15
+anchor_right = 0.9
+anchor_bottom = 0.225
+texture = ExtResource("1_q4b8a")
+flip_h = true
+
+[node name="SettingsTitleLbl" type="RichTextLabel" parent="." unique_id=662774948]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.05
+anchor_right = 0.7
+anchor_bottom = 0.15
+theme_override_fonts/normal_font = ExtResource("1_gne0f")
+theme_override_font_sizes/normal_font_size = 50
+text = "Settings"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SettingsVBox" type="VBoxContainer" parent="." unique_id=222908020]
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.275
+anchor_right = 0.8
+anchor_bottom = 0.95
+
+[node name="TextureRect" type="TextureRect" parent="SettingsVBox" unique_id=363195025]
+layout_mode = 2
+texture = ExtResource("3_mw62m")
+expand_mode = 1
+
+[node name="SensHBox" type="HBoxContainer" parent="SettingsVBox" unique_id=597080547]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="SensLbl" type="RichTextLabel" parent="SettingsVBox/SensHBox" unique_id=1417368317]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_gne0f")
+theme_override_font_sizes/normal_font_size = 25
+text = "Sensitivity"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="SensSliderHBox" type="HBoxContainer" parent="SettingsVBox/SensHBox" unique_id=249205856]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SensValueLbl" type="RichTextLabel" parent="SettingsVBox/SensHBox/SensSliderHBox" unique_id=747327372]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_gne0f")
+theme_override_font_sizes/normal_font_size = 20
+text = "1.0"
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SensHSlider" type="HSlider" parent="SettingsVBox/SensHBox/SensSliderHBox" unique_id=810448665]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
+min_value = 0.1
+max_value = 10.0
+step = 0.1
+value = 1.0
+
+[node name="SensResetBtn" type="TextureButton" parent="SettingsVBox/SensHBox/SensSliderHBox" unique_id=2127359888]
+modulate = Color(1, 1, 1, 0.78431374)
+custom_minimum_size = Vector2(45, 0)
+custom_maximum_size = Vector2(-1, 45)
+layout_mode = 2
+action_mode = 0
+texture_normal = ExtResource("5_3hh3s")
+ignore_texture_size = true
+stretch_mode = 0
+
+[connection signal="value_changed" from="SettingsVBox/SensHBox/SensSliderHBox/SensHSlider" to="." method="_on_sens_h_slider_value_changed"]
+[connection signal="pressed" from="SettingsVBox/SensHBox/SensSliderHBox/SensResetBtn" to="." method="_on_sens_reset_btn_pressed"]

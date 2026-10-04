@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cs7gfp364s7se"]
 
 [ext_resource type="Texture2D" uid="uid://xucyka6aykax" path="res://Textures/UI/pause_gradient.png" id="1_eod5q"]
-[ext_resource type="Script" uid="uid://dwixy3ad1fmv7" path="res://Scripts/PauseMenu.gd" id="1_n4i8v"]
+[ext_resource type="Script" uid="uid://dwixy3ad1fmv7" path="res://Scripts/UI/PauseMenu.gd" id="1_n4i8v"]
 [ext_resource type="Texture2D" uid="uid://c8aad27rgh8yb" path="res://Textures/UI/red_gradient_ui_button.png" id="3_238ko"]
 [ext_resource type="FontFile" uid="uid://dc8by4tv176p3" path="res://Fonts/SyneMono-Regular.ttf" id="4_2bpff"]
 
