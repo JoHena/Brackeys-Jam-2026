@@ -1,6 +1,8 @@
 [gd_scene format=4 uid="uid://bakhfle4w5jfd"]
 
 [ext_resource type="Script" uid="uid://ctxmyh5l8ewg8" path="res://Scripts/LightPuzzle.gd" id="1_viqjy"]
+[ext_resource type="Shader" uid="uid://c1yip544x5krr" path="res://Shaders/Outline.gdshader" id="2_53xjc"]
+[ext_resource type="Script" uid="uid://yqieuyctqbge" path="res://Scripts/InteractableHighlight.gd" id="3_ob7uu"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xe3dv"]
 resource_name = "yellow metal"
@@ -74,6 +76,13 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_7fn0g")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_53xjc"]
+render_priority = 0
+shader = ExtResource("2_53xjc")
+shader_parameter/albedo_color = Color(0.5, 0.5, 0.5, 1)
+shader_parameter/glow_intensity = 5.8610002783975
+shader_parameter/highlight_color = Color(0.3, 0.8, 1, 1)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6idu3"]
 resource_name = "button plastic blue"
 cull_mode = 2
@@ -114,15 +123,23 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_8uko6")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y4yqb"]
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_viqjy"]
 size = Vector3(0.7374878, 2.454773, 0.33642578)
 
-[node name="LightPuzzle" type="StaticBody3D" unique_id=1872927672]
+[node name="LightPuzzle" type="StaticBody3D" unique_id=1872927672 node_paths=PackedStringArray("highlight")]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_viqjy")
 pointer_sensitivity = 0.001
 pointer_size = 0.005
+highlight = NodePath("HighlightController")
+
+[node name="HighlightController" type="Node" parent="." unique_id=1937305981 node_paths=PackedStringArray("target_meshes")]
+script = ExtResource("3_ob7uu")
+target_meshes = [NodePath("../Bar")]
+fade_out_duration = 0.436
 
 [node name="Bar" type="MeshInstance3D" parent="." unique_id=1987207847]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.9200354, 0)
@@ -130,15 +147,21 @@ mesh = SubResource("ArrayMesh_34ipa")
 
 [node name="Light_1" type="MeshInstance3D" parent="Bar" unique_id=1989450897]
 transform = Transform3D(0.39362478, 0, 0, 0, 0.39362478, 0, 0, 0, 0.39362478, 0.19395328, -0.48205853, 0.040183663)
+material_override = SubResource("ShaderMaterial_53xjc")
 mesh = SubResource("ArrayMesh_gfgk2")
+surface_material_override/0 = SubResource("ShaderMaterial_y4yqb")
 
 [node name="Light_2" type="MeshInstance3D" parent="Bar" unique_id=1203612628]
 transform = Transform3D(0.39362478, 0, 0, 0, 0.39362478, 0, 0, 0, 0.39362478, 0.19395328, -0.54290086, 0.040183663)
+material_override = SubResource("ShaderMaterial_53xjc")
 mesh = SubResource("ArrayMesh_gfgk2")
+surface_material_override/0 = SubResource("ShaderMaterial_y4yqb")
 
 [node name="Light_3" type="MeshInstance3D" parent="Bar" unique_id=1390655917]
 transform = Transform3D(0.39362478, 0, 0, 0, 0.39362478, 0, 0, 0, 0.39362478, 0.19395328, -0.6037432, 0.040183663)
+material_override = SubResource("ShaderMaterial_53xjc")
 mesh = SubResource("ArrayMesh_gfgk2")
+surface_material_override/0 = SubResource("ShaderMaterial_y4yqb")
 
 [node name="InteractableCamera" type="Camera3D" parent="." unique_id=885026977]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47195846, 1.4578329, 0.7884097)

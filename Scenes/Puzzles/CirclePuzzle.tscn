@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://c164xio57yhjk"]
 
 [ext_resource type="Script" uid="uid://cjcicu7m81wtg" path="res://Scripts/circle_puzzle.gd" id="1_al7d2"]
+[ext_resource type="Script" uid="uid://yqieuyctqbge" path="res://Scripts/InteractableHighlight.gd" id="2_b41co"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sjr3b"]
 resource_name = "circle puzzle cont"
@@ -287,11 +288,16 @@ shadow_mesh = SubResource("ArrayMesh_rb1va")
 height = 0.41235352
 radius = 2.6645508
 
-[node name="CirclePuzzle" type="StaticBody3D" unique_id=131323565]
+[node name="CirclePuzzle" type="StaticBody3D" unique_id=131323565 node_paths=PackedStringArray("highlight")]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("1_al7d2")
 pointer_size = 0.05
+highlight = NodePath("HighlightController")
+
+[node name="HighlightController" type="Node" parent="." unique_id=218478065 node_paths=PackedStringArray("target_meshes")]
+script = ExtResource("2_b41co")
+target_meshes = [NodePath("../Pieces/Frame")]
 
 [node name="Pieces" type="Node3D" parent="." unique_id=1991081638]
 
