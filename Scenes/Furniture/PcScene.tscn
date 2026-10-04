@@ -242,9 +242,9 @@ collision_layer = 4
 script = ExtResource("1_nbb70")
 highlight = NodePath("HighlightController")
 
-[node name="HighlightController" type="Node" parent="." unique_id=1906397074 node_paths=PackedStringArray("target_mesh")]
+[node name="HighlightController" type="Node" parent="." unique_id=1906397074 node_paths=PackedStringArray("target_meshes")]
 script = ExtResource("2_qurrg")
-target_mesh = NodePath("../computer_v3/KB_LP")
+target_meshes = [NodePath("../computer_v3/cable_LP"), NodePath("../computer_v3/KB_LP"), NodePath("../computer_v3/monitor_LP"), NodePath("../computer_v3/screen")]
 highlight_color = Color(0.9973914, 0.6539062, 0.1490728, 1)
 fade_out_duration = 0.436
 

@@ -14,9 +14,9 @@ script = ExtResource("1_1nq7g")
 dialogueSources = ["res://Dialogue/Intercom/IntercomIntro.json"]
 highlight = NodePath("HighlightController")
 
-[node name="HighlightController" type="Node" parent="." unique_id=148830085 node_paths=PackedStringArray("target_mesh")]
+[node name="HighlightController" type="Node" parent="." unique_id=148830085 node_paths=PackedStringArray("target_meshes")]
 script = ExtResource("2_tcsfv")
-target_mesh = NodePath("../Model/intercom_LP")
+target_meshes = [NodePath("../Model/intercom_LP")]
 fade_out_duration = 0.436
 
 [node name="Model" parent="." unique_id=1117144492 instance=ExtResource("1_e5vip")]

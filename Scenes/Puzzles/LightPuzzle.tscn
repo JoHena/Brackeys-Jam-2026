@@ -136,9 +136,9 @@ pointer_sensitivity = 0.001
 pointer_size = 0.005
 highlight = NodePath("HighlightController")
 
-[node name="HighlightController" type="Node" parent="." unique_id=1937305981 node_paths=PackedStringArray("target_mesh")]
+[node name="HighlightController" type="Node" parent="." unique_id=1937305981 node_paths=PackedStringArray("target_meshes")]
 script = ExtResource("3_ob7uu")
-target_mesh = NodePath("../Bar")
+target_meshes = [NodePath("../Bar")]
 fade_out_duration = 0.436
 
 [node name="Bar" type="MeshInstance3D" parent="." unique_id=1987207847]

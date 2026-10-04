@@ -2,7 +2,8 @@ extends Node
 class_name InteractableHighlight
 
 @export_group("Target")
-@export var target_mesh: MeshInstance3D
+@export var target_meshes: Array[MeshInstance3D] = []
+@export var highlight_surface: int = 0
 
 @export_group("Highlight")
 @export var highlight_color: Color = Color(0.99, 0.65, 0.14, 1.0)
@@ -19,42 +20,57 @@ class_name InteractableHighlight
 @export var fade_out_ease: Tween.EaseType = Tween.EASE_IN_OUT
 
 
-var _original_materials: Array[Material] = []
-var _highlight_materials: Array[StandardMaterial3D] = []
+class HighlightData:
+	var mesh: MeshInstance3D
+	var surface: int
+	var original_material: Material
+	var highlight_material: StandardMaterial3D
+
+
+var _materials: Array[HighlightData] = []
 
 var _tween: Tween
-var _is_highlighted: bool = false
+var _is_highlighted := false
+
 
 func _ready() -> void:
 	_setup()
 
 
 func _setup() -> void:
-	if target_mesh == null or target_mesh.mesh == null:
-		return
+	_materials.clear()
 
-	for i in range(target_mesh.mesh.get_surface_count()):
-		var original := target_mesh.get_active_material(i)
+	for mesh_instance in target_meshes:
+		if mesh_instance == null or mesh_instance.mesh == null:
+			continue
 
-		_original_materials.append(
-			target_mesh.get_surface_override_material(i)
+		if highlight_surface >= mesh_instance.mesh.get_surface_count():
+			continue
+
+		var original := mesh_instance.get_active_material(highlight_surface)
+
+		if not original is StandardMaterial3D:
+			continue
+
+		var data := HighlightData.new()
+
+		data.mesh = mesh_instance
+		data.surface = highlight_surface
+
+		data.original_material = mesh_instance.get_surface_override_material(
+			highlight_surface
 		)
 
-		if original is StandardMaterial3D:
-			var highlight := original.duplicate() as StandardMaterial3D
+		data.highlight_material = original.duplicate() as StandardMaterial3D
 
-			highlight.emission_enabled = true
-			highlight.emission = highlight_color
-			highlight.emission_energy_multiplier = 0.0
+		data.highlight_material.emission_enabled = true
+		data.highlight_material.emission = highlight_color
+		data.highlight_material.emission_energy_multiplier = 0.0
 
-			_highlight_materials.append(highlight)
-		else:
-			_highlight_materials.append(null)
+		_materials.append(data)
+
 
 func set_highlight(enabled: bool) -> void:
-	if target_mesh == null:
-		return
-
 	if _is_highlighted == enabled:
 		return
 
@@ -64,12 +80,11 @@ func set_highlight(enabled: bool) -> void:
 		_tween.kill()
 
 	if enabled:
-		for i in range(_highlight_materials.size()):
-			if _highlight_materials[i] != null:
-				target_mesh.set_surface_override_material(
-					i,
-					_highlight_materials[i]
-				)
+		for data in _materials:
+			data.mesh.set_surface_override_material(
+				data.surface,
+				data.highlight_material
+			)
 
 		_tween = create_tween()
 		_tween.set_trans(fade_in_transition)
@@ -96,20 +111,25 @@ func set_highlight(enabled: bool) -> void:
 
 		_tween.tween_callback(_restore_materials)
 
+
 func _set_emission(value: float) -> void:
-	for material in _highlight_materials:
-		if material != null:
-			material.emission_energy_multiplier = value
+	for data in _materials:
+		data.highlight_material.emission_energy_multiplier = value
 
 
 func _get_emission() -> float:
-	for material in _highlight_materials:
-		if material != null:
-			return material.emission_energy_multiplier
+	if _materials.is_empty():
+		return 0.0
 
-	return 0.0
+	return _materials[0].highlight_material.emission_energy_multiplier
 
 
 func _restore_materials() -> void:
 	if _is_highlighted:
 		return
+
+	for data in _materials:
+		data.mesh.set_surface_override_material(
+			data.surface,
+			data.original_material
+		)
