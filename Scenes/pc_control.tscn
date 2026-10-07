@@ -183,6 +183,7 @@ script = ExtResource("10_cxkgp")
 
 [node name="FolderWindow" type="Control" parent="Folder" unique_id=1952917000]
 visible = false
+z_as_relative = false
 anchors_preset = 0
 offset_left = 76.0
 offset_top = 50.0
