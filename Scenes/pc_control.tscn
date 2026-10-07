@@ -11,6 +11,8 @@
 [ext_resource type="StyleBox" uid="uid://b18yybjdaixt5" path="res://Themes/Classic311/Styles/Panel/TabBackground.tres" id="7_5e78l"]
 [ext_resource type="Texture2D" uid="uid://c4gd68xgg1dyt" path="res://Textures/UI/folder.jpg" id="9_6hmro"]
 [ext_resource type="Script" uid="uid://d2pfhilfqlirf" path="res://Scripts/pc_folder.gd" id="10_cxkgp"]
+[ext_resource type="Texture2D" uid="uid://8aq2652yh8gv" path="res://Themes/Classic95/Styles/Button/Button.png" id="12_fgk86"]
+[ext_resource type="Texture2D" uid="uid://cg8rm31wivqyk" path="res://Themes/Classic95/Styles/Button/Pressed.png" id="13_2dpay"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5qjw6"]
 shader = ExtResource("4_7syg2")
@@ -36,6 +38,39 @@ shader_parameter/roll_speed = 1.45200006897
 shader_parameter/roll_strength = 0.15
 shader_parameter/glow_strength = 0.71200003382
 shader_parameter/glow_threshold = 0.65
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rndhe"]
+texture = ExtResource("12_fgk86")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(0, 0, 6, 6)
+modulate_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nd4nb"]
+texture = ExtResource("13_2dpay")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(0, 0, 6, 6)
+modulate_color = Color(1, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i4o13"]
+texture = ExtResource("12_fgk86")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+region_rect = Rect2(0, 0, 6, 6)
+modulate_color = Color(1, 0, 0, 1)
 
 [node name="PCControl" type="Control" unique_id=1553052356]
 layout_mode = 3
@@ -193,3 +228,18 @@ offset_top = 33.0
 offset_right = 393.0
 offset_bottom = 256.0
 color = Color(0.70380783, 0.70380783, 0.70380783, 1)
+
+[node name="CloseButton" type="Button" parent="Folder/FolderWindow/Panel" unique_id=712812559]
+layout_mode = 0
+offset_left = 378.0
+offset_top = 2.0
+offset_right = 396.0
+offset_bottom = 20.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxTexture_rndhe")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_nd4nb")
+theme_override_styles/hover = SubResource("StyleBoxTexture_i4o13")
+text = "X"
+icon_alignment = 1
+expand_icon = true

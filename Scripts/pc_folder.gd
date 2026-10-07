@@ -3,6 +3,7 @@ extends Button
 @onready var cursor = $"../Cursor"
 
 @onready var sub_window = $FolderWindow
+@onready var close_button = $FolderWindow/Panel/CloseButton
 @onready var drag_bar: Control = $FolderWindow/Panel/DragBar
 @onready var orig_sub_window_index: int = sub_window.z_index
 
@@ -17,9 +18,11 @@ func _process(_delta: float) -> void:
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		if folder_open == false and get_global_rect().has_point(cursor_pos):
 			folder_open = true
-			
 			sub_window.visible = true
 		elif folder_open == true:
+			if not dragging and close_button.get_global_rect().has_point(cursor_pos) and cursor.dragged_window == null:
+				folder_open = false
+				sub_window.visible = false
 			if not dragging and drag_bar.get_global_rect().has_point(cursor_pos) and cursor.dragged_window == null:
 				dragging = true
 				cursor.dragged_window = sub_window
