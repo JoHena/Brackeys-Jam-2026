@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://b4sgob4qwlotx" path="res://Models/Pc_BG.jpg" id="1_s37md"]
 [ext_resource type="Texture2D" uid="uid://c7kp45j78kml5" path="res://Cursor79.png" id="2_sh26r"]
 [ext_resource type="Shader" uid="uid://r0gpbajjeqfy" path="res://Shaders/CRT.gdshader" id="4_7syg2"]
+[ext_resource type="Script" uid="uid://co1vxbyyuhd7g" path="res://Scripts/pc_cursor.gd" id="5_cxkgp"]
 [ext_resource type="StyleBox" uid="uid://dlg1ufs1ksikh" path="res://Themes/Classic311/Styles/Panel/TabForeground.tres" id="6_61ech"]
 [ext_resource type="Script" uid="uid://cmjx6jseponc2" path="res://Scripts/pc_alert.gd" id="6_rndhe"]
 [ext_resource type="StyleBox" uid="uid://b18yybjdaixt5" path="res://Themes/Classic311/Styles/Panel/TabBackground.tres" id="7_5e78l"]
@@ -55,7 +56,9 @@ expand_mode = 2
 
 [node name="Cursor" type="Sprite2D" parent="." unique_id=1858038245]
 top_level = true
+z_index = 100
 texture = ExtResource("2_sh26r")
+script = ExtResource("5_cxkgp")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=619805776]
 material = SubResource("ShaderMaterial_5qjw6")
@@ -65,7 +68,7 @@ offset_bottom = 512.0
 mouse_filter = 1
 
 [node name="PCAlert" type="Control" parent="." unique_id=433786995]
-visible = false
+z_index = 3
 anchors_preset = 0
 offset_left = 76.0
 offset_top = 120.0
@@ -132,6 +135,7 @@ alignment = 1
 editable = false
 
 [node name="Folder" type="Button" parent="." unique_id=1898789513]
+z_index = 1
 layout_mode = 0
 offset_left = 39.0
 offset_top = 113.0
@@ -141,3 +145,51 @@ icon = ExtResource("9_6hmro")
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("10_cxkgp")
+
+[node name="FolderWindow" type="Control" parent="Folder" unique_id=1952917000]
+visible = false
+anchors_preset = 0
+offset_left = 76.0
+offset_top = 50.0
+offset_right = 116.0
+offset_bottom = 90.0
+mouse_filter = 1
+
+[node name="Panel" type="Panel" parent="Folder/FolderWindow" unique_id=1808098797]
+layout_mode = 1
+offset_right = 400.0
+offset_bottom = 267.0
+mouse_filter = 1
+theme_override_styles/panel = ExtResource("6_61ech")
+
+[node name="DragBar" type="Panel" parent="Folder/FolderWindow/Panel" unique_id=1164366239]
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 23.0
+theme = ExtResource("1_5qjw6")
+theme_override_styles/panel = ExtResource("7_5e78l")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Folder/FolderWindow/Panel/DragBar" unique_id=836195422]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -10.5
+offset_right = 24.0
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_force_pass_scroll_events = false
+text = "Folder"
+scroll_active = false
+
+[node name="ColorRect2" type="ColorRect" parent="Folder/FolderWindow/Panel" unique_id=1022838201]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 33.0
+offset_right = 393.0
+offset_bottom = 256.0
+color = Color(0.70380783, 0.70380783, 0.70380783, 1)
