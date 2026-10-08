@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dro2kmcfmt7ba"]
 
+[ext_resource type="Script" uid="uid://0enorweicnyq" path="res://Scripts/UI/SettingsMenu.gd" id="1_83xbh"]
 [ext_resource type="FontFile" uid="uid://dc8by4tv176p3" path="res://Fonts/SyneMono-Regular.ttf" id="1_gne0f"]
-[ext_resource type="Script" uid="uid://dnskpdlmjn4bo" path="res://Scripts/UI/Settings.gd" id="1_owj4x"]
 [ext_resource type="Texture2D" uid="uid://bqltxbkdlx104" path="res://Textures/UI/divider-fade-001.png" id="1_q4b8a"]
 [ext_resource type="Texture2D" uid="uid://c8aad27rgh8yb" path="res://Textures/UI/red_gradient_ui_button.png" id="3_mw62m"]
 [ext_resource type="Texture2D" uid="uid://0uw8px0wj5ln" path="res://Textures/UI/reset_icon.png" id="5_3hh3s"]
@@ -20,13 +20,23 @@ corner_radius_bottom_left = 4
 corner_detail = 6
 
 [node name="SettingsMenu" type="Control" unique_id=548582870]
+z_index = 10
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_owj4x")
+script = ExtResource("1_83xbh")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1402216337]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.627451)
 
 [node name="DividerTexture1" type="TextureRect" parent="." unique_id=129810483]
 layout_mode = 1
@@ -54,6 +64,7 @@ anchor_left = 0.3
 anchor_top = 0.05
 anchor_right = 0.7
 anchor_bottom = 0.15
+mouse_filter = 1
 theme_override_fonts/normal_font = ExtResource("1_gne0f")
 theme_override_font_sizes/normal_font_size = 50
 text = "Settings"
@@ -346,6 +357,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 theme_override_fonts/normal_font = ExtResource("1_gne0f")
 theme_override_font_sizes/normal_font_size = 25
 text = "Save and Return"

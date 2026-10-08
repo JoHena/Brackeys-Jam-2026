@@ -1,145 +1,56 @@
 extends Node
+# Don't use class names on global scripts
+
+const _SETTINGS_FILE_PATH: String = "user://settings.cfg"
 
 ## Settings values
-var window_mode: int
 var sensitivity: float
 var master_volume: float
 var music_volume: float
 var sfx_volume: float
+var window_mode: int
 
 ## Default settings values
-const _DEFAULT_SENSITIVITY : float = 1.0
-const _DEFAULT_MASTER_VOLUME: float = 1.0
-const _DEFAULT_MUSIC_VOLUME : float = 1.0
-const _DEFAULT_SFX_VOLUME: float = 1.0
-
-## Scene references
-@onready var _sens_value_lbl := $SettingsVBox/SensHBox/SensSliderHBox/SensValueLbl
-@onready var _sens_slider := $SettingsVBox/SensHBox/SensSliderHBox/SensHSlider
-@onready var _sens_reset_btn := $SettingsVBox/SensHBox/SensSliderHBox/SensResetBtn
-
-@onready var _master_vol_value_lbl := $SettingsVBox/MasterVolHBox/MasterVolSliderHBox/MasterVolValueLbl
-@onready var _master_vol_slider := $SettingsVBox/MasterVolHBox/MasterVolSliderHBox/MasterVolHSlider
-@onready var _master_vol_reset_btn := $SettingsVBox/MasterVolHBox/MasterVolSliderHBox/MasterVolResetBtn
-
-@onready var _music_vol_value_lbl := $SettingsVBox/MusicVolHBox/MusicVolSliderHBox/MusicVolValueLbl
-@onready var _music_vol_slider := $SettingsVBox/MusicVolHBox/MusicVolSliderHBox/MusicVolHSlider
-@onready var _music_vol_reset_btn := $SettingsVBox/MusicVolHBox/MusicVolSliderHBox/MusicVolResetBtn
-
-@onready var _sfx_vol_value_lbl := $SettingsVBox/SFXVolHBox/SFXVolSliderHBox/SFXVolValueLbl
-@onready var _sfx_vol_slider := $SettingsVBox/SFXVolHBox/SFXVolSliderHBox/SFXVolHSlider
-@onready var _sfx_vol_reset_btn := $SettingsVBox/SFXVolHBox/SFXVolSliderHBox/SFXVolResetBtn
-
-@onready var _window_mode_option_btn := $SettingsVBox/WindowModeHBox/WindowModeSliderHBox/WindowModeOptionBtn
-
-var reset_btn_disabled_color: Color = Color(1, 1, 1, 0.5)
-var reset_btn_normal_color: Color = Color(1, 1, 1, 0.9)
-
-## TODO - make a ready function which loads saved values. Or at least initialize reset buttons to disabled
+const DEFAULT_SENSITIVITY: float = 1.0
+const DEFAULT_MASTER_VOLUME: float = 1.0
+const DEFAULT_MUSIC_VOLUME: float = 1.0
+const DEFAULT_SFX_VOLUME: float = 1.0
+const DEFAULT_WINDOW_MODE: int = 2 # Fullscreen (Index 0 = Windowed, 1 = Maximized, 2 = Fullscreen, 3 = Exclusive Fullcreen)
 
 
-## Updates sensitivity and reset button disabled state
-func _set_sensitivity(value: float) -> void:
-	sensitivity = value
-	_sens_value_lbl.text = str(sensitivity)
+
+## Initialize settings, called before _ready()
+func _init() -> void:
+	load_settings()
+
+
+## Sets all config file values, then saves the config file to the player's computer
+func save_settings() -> void:
+	var config = ConfigFile.new()
 	
-	if sensitivity == _DEFAULT_SENSITIVITY: # Disable reset button
-		_sens_reset_btn.disabled = true
-		_sens_reset_btn.self_modulate = reset_btn_disabled_color
-	elif _sens_reset_btn.disabled == true: # Enable reset button
-		_sens_reset_btn.disabled = false
-		_sens_reset_btn.self_modulate = reset_btn_normal_color
-
-## Resets sensitivity to the default value and disables reset button
-func _on_sens_reset_btn_pressed() -> void:
-	sensitivity = _DEFAULT_SENSITIVITY
-	_sens_slider.value = sensitivity
-	_sens_value_lbl.text = str(sensitivity)
+	config.set_value("general", "sensitivity", sensitivity)
+	config.set_value("general", "master_volume", master_volume)
+	config.set_value("general", "music_volume", music_volume)
+	config.set_value("general", "sfx_volume", sfx_volume)
+	config.set_value("general", "window_mode", window_mode)
 	
-	_sens_reset_btn.disabled = true
-	_sens_reset_btn.self_modulate = reset_btn_disabled_color
+	config.save(_SETTINGS_FILE_PATH)
 
 
-## Updates master volume and reset button disabled state
-func _set_master_volume(value: float) -> void:
-	master_volume = value
-	_master_vol_value_lbl.text = str(int(master_volume * 100)) + "%"
+## Loads the config file and initializes all settings variables
+## If no config file exists a new one is created with default values.
+func load_settings() -> void:
+	var config = ConfigFile.new()
 	
-	if master_volume == _DEFAULT_MASTER_VOLUME: # Disable reset button
-		_master_vol_reset_btn.disabled = true
-		_master_vol_reset_btn.self_modulate = reset_btn_disabled_color
-	elif _master_vol_reset_btn.disabled == true: # Enable reset button
-		_master_vol_reset_btn.disabled = false
-		_master_vol_reset_btn.self_modulate = reset_btn_normal_color
-
-## Resets master volume to the default value and disables reset button
-func _on_master_vol_reset_btn_pressed() -> void:
-	master_volume = _DEFAULT_MASTER_VOLUME
-	_master_vol_slider.value = master_volume
-	_master_vol_value_lbl.text = str(int(master_volume * 100)) + "%"
+	# Load data from a file, if null it will use the default constants
+	var err = config.load(_SETTINGS_FILE_PATH)
+	sensitivity = config.get_value("general", "sensitivity", DEFAULT_SENSITIVITY)
+	master_volume = config.get_value("general", "master_volume", DEFAULT_MASTER_VOLUME)
+	music_volume = config.get_value("general", "music_volume", DEFAULT_MUSIC_VOLUME)
+	sfx_volume = config.get_value("general", "sfx_volume", DEFAULT_SFX_VOLUME)
+	window_mode = config.get_value("general", "window_mode", DEFAULT_WINDOW_MODE)
 	
-	_master_vol_reset_btn.disabled = true
-	_master_vol_reset_btn.self_modulate = reset_btn_disabled_color
-
-
-## Updates music volume and reset button disabled state
-func _set_music_volume(value: float) -> void:
-	music_volume = value
-	_music_vol_value_lbl.text = str(int(music_volume * 100)) + "%"
-	
-	if music_volume == _DEFAULT_MUSIC_VOLUME: # Disable reset button
-		_music_vol_reset_btn.disabled = true
-		_music_vol_reset_btn.self_modulate = reset_btn_disabled_color
-	elif _music_vol_reset_btn.disabled == true: # Enable reset button
-		_music_vol_reset_btn.disabled = false
-		_music_vol_reset_btn.self_modulate = reset_btn_normal_color
-
-## Resets music volume to the default value and disables reset button
-func _on_music_vol_reset_btn_pressed() -> void:
-	music_volume = _DEFAULT_MUSIC_VOLUME
-	_music_vol_slider.value = music_volume
-	_music_vol_value_lbl.text = str(int(music_volume * 100)) + "%"
-	
-	_music_vol_reset_btn.disabled = true
-	_music_vol_reset_btn.self_modulate = reset_btn_disabled_color
-
-
-## Updates SFX volume and reset button disabled state
-func _set_sfx_volume(value: float) -> void:
-	sfx_volume = value
-	_sfx_vol_value_lbl.text = str(int(sfx_volume * 100)) + "%"
-	
-	if sfx_volume == _DEFAULT_SFX_VOLUME: # Disable reset button
-		_sfx_vol_reset_btn.disabled = true
-		_sfx_vol_reset_btn.self_modulate = reset_btn_disabled_color
-	elif _sfx_vol_reset_btn.disabled == true: # Enable reset button
-		_sfx_vol_reset_btn.disabled = false
-		_sfx_vol_reset_btn.self_modulate = reset_btn_normal_color
-
-## Resets SFX volume to the default value and disables reset button
-func _on_sfx_vol_reset_btn_pressed() -> void:
-	sfx_volume = _DEFAULT_SFX_VOLUME
-	_sfx_vol_slider.value = music_volume
-	_sfx_vol_value_lbl.text = str(int(sfx_volume * 100)) + "%"
-	
-	_sfx_vol_reset_btn.disabled = true
-	_sfx_vol_reset_btn.self_modulate = reset_btn_disabled_color
-
-
-## Sets the window mode (id 0 = Windowed, 2 = Maximized, 3 = Fullscreen, 4 = Exclusive Fullscreen)
-func _set_window_mode(value: int) -> void:
-	if value < 0 or value > 4: 
-		printerr("[Settings] window mode value must be between 0-4. Provided value is ", value)
-		return
-	
-	window_mode = value
-	_window_mode_option_btn.selected = window_mode # Update for when set from save file
-	
-	# The enum value correlates with the option's id
-	var window_mode_enum := _window_mode_option_btn.get_selected_id() as DisplayServer.WindowMode
-	DisplayServer.window_set_mode(window_mode_enum)
-
-
-## TODO
-func _on_save_and_return_button_pressed():
-	pass # Replace with function body.
+	# Save settings if loading failed
+	if err != OK:
+		printerr("[Settings] error loading config file at path: ", _SETTINGS_FILE_PATH, "\nCreating new config file with default values")
+		save_settings()

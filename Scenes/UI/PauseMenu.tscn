@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://dwixy3ad1fmv7" path="res://Scripts/UI/PauseMenu.gd" id="1_n4i8v"]
 [ext_resource type="Texture2D" uid="uid://c8aad27rgh8yb" path="res://Textures/UI/red_gradient_ui_button.png" id="3_238ko"]
 [ext_resource type="FontFile" uid="uid://dc8by4tv176p3" path="res://Fonts/SyneMono-Regular.ttf" id="4_2bpff"]
+[ext_resource type="PackedScene" uid="uid://dro2kmcfmt7ba" path="res://Scenes/UI/SettingsMenu.tscn" id="5_8hc20"]
 
 [node name="PauseMenu" type="Control" unique_id=1341252559]
 process_mode = 3
@@ -105,6 +106,11 @@ text = "Quit"
 scroll_active = false
 vertical_alignment = 1
 
+[node name="SettingsMenu" parent="." unique_id=548582870 instance=ExtResource("5_8hc20")]
+visible = false
+layout_mode = 1
+
 [connection signal="pressed" from="ButtonsVBox/ResumeButton" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="ButtonsVBox/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="ButtonsVBox/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="on_settings_save_and_close" from="SettingsMenu" to="." method="_on_settings_save_and_close"]
