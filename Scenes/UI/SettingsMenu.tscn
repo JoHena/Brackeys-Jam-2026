@@ -36,7 +36,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.627451)
+color = Color(0, 0, 0, 0.39215687)
 
 [node name="DividerTexture1" type="TextureRect" parent="." unique_id=129810483]
 layout_mode = 1
@@ -81,16 +81,24 @@ anchor_top = 0.275
 anchor_right = 0.8
 anchor_bottom = 0.95
 
-[node name="TextureRect" type="TextureRect" parent="SettingsVBox" unique_id=363195025]
+[node name="SensBkgTxtr" type="TextureRect" parent="SettingsVBox" unique_id=2062209483]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 texture = ExtResource("3_mw62m")
 expand_mode = 1
 
-[node name="SensHBox" type="HBoxContainer" parent="SettingsVBox" unique_id=597080547]
+[node name="SensHBox" type="HBoxContainer" parent="SettingsVBox/SensBkgTxtr" unique_id=597080547]
 custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="SensLbl" type="RichTextLabel" parent="SettingsVBox/SensHBox" unique_id=1417368317]
+[node name="SensLbl" type="RichTextLabel" parent="SettingsVBox/SensBkgTxtr/SensHBox" unique_id=1417368317]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -101,12 +109,12 @@ text = "Sensitivity"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="SensSliderHBox" type="HBoxContainer" parent="SettingsVBox/SensHBox" unique_id=249205856]
+[node name="SensSliderHBox" type="HBoxContainer" parent="SettingsVBox/SensBkgTxtr/SensHBox" unique_id=249205856]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="SensValueLbl" type="RichTextLabel" parent="SettingsVBox/SensHBox/SensSliderHBox" unique_id=747327372]
-custom_minimum_size = Vector2(200, 0)
+[node name="SensValueLbl" type="RichTextLabel" parent="SettingsVBox/SensBkgTxtr/SensHBox/SensSliderHBox" unique_id=747327372]
+custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 mouse_filter = 1
@@ -117,7 +125,7 @@ scroll_active = false
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="SensHSlider" type="HSlider" parent="SettingsVBox/SensHBox/SensSliderHBox" unique_id=810448665]
+[node name="SensHSlider" type="HSlider" parent="SettingsVBox/SensBkgTxtr/SensHBox/SensSliderHBox" unique_id=810448665]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 10
@@ -133,7 +141,7 @@ tick_count = 6
 ticks_on_borders = true
 ticks_position = 3
 
-[node name="SensResetBtn" type="TextureButton" parent="SettingsVBox/SensHBox/SensSliderHBox" unique_id=2127359888]
+[node name="SensResetBtn" type="TextureButton" parent="SettingsVBox/SensBkgTxtr/SensHBox/SensSliderHBox" unique_id=2127359888]
 modulate = Color(1, 1, 1, 0.78431374)
 custom_minimum_size = Vector2(45, 0)
 custom_maximum_size = Vector2(-1, 45)
@@ -143,11 +151,24 @@ texture_normal = ExtResource("5_3hh3s")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="MasterVolHBox" type="HBoxContainer" parent="SettingsVBox" unique_id=817744306]
+[node name="MasterVolBkgTxtr" type="TextureRect" parent="SettingsVBox" unique_id=1848296344]
+self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+texture = ExtResource("3_mw62m")
+expand_mode = 1
 
-[node name="MasterVolLbl" type="RichTextLabel" parent="SettingsVBox/MasterVolHBox" unique_id=1609884033]
+[node name="MasterVolHBox" type="HBoxContainer" parent="SettingsVBox/MasterVolBkgTxtr" unique_id=817744306]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MasterVolLbl" type="RichTextLabel" parent="SettingsVBox/MasterVolBkgTxtr/MasterVolHBox" unique_id=1609884033]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -158,12 +179,12 @@ text = "Master Volume"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="MasterVolSliderHBox" type="HBoxContainer" parent="SettingsVBox/MasterVolHBox" unique_id=309028706]
+[node name="MasterVolSliderHBox" type="HBoxContainer" parent="SettingsVBox/MasterVolBkgTxtr/MasterVolHBox" unique_id=309028706]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="MasterVolValueLbl" type="RichTextLabel" parent="SettingsVBox/MasterVolHBox/MasterVolSliderHBox" unique_id=477214993]
-custom_minimum_size = Vector2(200, 0)
+[node name="MasterVolValueLbl" type="RichTextLabel" parent="SettingsVBox/MasterVolBkgTxtr/MasterVolHBox/MasterVolSliderHBox" unique_id=477214993]
+custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 mouse_filter = 1
@@ -174,7 +195,7 @@ scroll_active = false
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="MasterVolHSlider" type="HSlider" parent="SettingsVBox/MasterVolHBox/MasterVolSliderHBox" unique_id=1759004495]
+[node name="MasterVolHSlider" type="HSlider" parent="SettingsVBox/MasterVolBkgTxtr/MasterVolHBox/MasterVolSliderHBox" unique_id=1759004495]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 10
@@ -189,7 +210,7 @@ tick_count = 6
 ticks_on_borders = true
 ticks_position = 3
 
-[node name="MasterVolResetBtn" type="TextureButton" parent="SettingsVBox/MasterVolHBox/MasterVolSliderHBox" unique_id=589396248]
+[node name="MasterVolResetBtn" type="TextureButton" parent="SettingsVBox/MasterVolBkgTxtr/MasterVolHBox/MasterVolSliderHBox" unique_id=589396248]
 modulate = Color(1, 1, 1, 0.78431374)
 custom_minimum_size = Vector2(45, 0)
 custom_maximum_size = Vector2(-1, 45)
@@ -199,11 +220,24 @@ texture_normal = ExtResource("5_3hh3s")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="MusicVolHBox" type="HBoxContainer" parent="SettingsVBox" unique_id=1897928310]
+[node name="MusicVolBkgTxtr" type="TextureRect" parent="SettingsVBox" unique_id=437163551]
+self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+texture = ExtResource("3_mw62m")
+expand_mode = 1
 
-[node name="MusicVolLbl" type="RichTextLabel" parent="SettingsVBox/MusicVolHBox" unique_id=1701744661]
+[node name="MusicVolHBox" type="HBoxContainer" parent="SettingsVBox/MusicVolBkgTxtr" unique_id=1897928310]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MusicVolLbl" type="RichTextLabel" parent="SettingsVBox/MusicVolBkgTxtr/MusicVolHBox" unique_id=1701744661]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -214,12 +248,12 @@ text = "Music Volume"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="MusicVolSliderHBox" type="HBoxContainer" parent="SettingsVBox/MusicVolHBox" unique_id=1620700894]
+[node name="MusicVolSliderHBox" type="HBoxContainer" parent="SettingsVBox/MusicVolBkgTxtr/MusicVolHBox" unique_id=1620700894]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="MusicVolValueLbl" type="RichTextLabel" parent="SettingsVBox/MusicVolHBox/MusicVolSliderHBox" unique_id=1354481429]
-custom_minimum_size = Vector2(200, 0)
+[node name="MusicVolValueLbl" type="RichTextLabel" parent="SettingsVBox/MusicVolBkgTxtr/MusicVolHBox/MusicVolSliderHBox" unique_id=1354481429]
+custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 mouse_filter = 1
@@ -230,7 +264,7 @@ scroll_active = false
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="MusicVolHSlider" type="HSlider" parent="SettingsVBox/MusicVolHBox/MusicVolSliderHBox" unique_id=1178409606]
+[node name="MusicVolHSlider" type="HSlider" parent="SettingsVBox/MusicVolBkgTxtr/MusicVolHBox/MusicVolSliderHBox" unique_id=1178409606]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 10
@@ -245,7 +279,7 @@ tick_count = 6
 ticks_on_borders = true
 ticks_position = 3
 
-[node name="MusicVolResetBtn" type="TextureButton" parent="SettingsVBox/MusicVolHBox/MusicVolSliderHBox" unique_id=1742581324]
+[node name="MusicVolResetBtn" type="TextureButton" parent="SettingsVBox/MusicVolBkgTxtr/MusicVolHBox/MusicVolSliderHBox" unique_id=1742581324]
 modulate = Color(1, 1, 1, 0.78431374)
 custom_minimum_size = Vector2(45, 0)
 custom_maximum_size = Vector2(-1, 45)
@@ -255,11 +289,24 @@ texture_normal = ExtResource("5_3hh3s")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="SFXVolHBox" type="HBoxContainer" parent="SettingsVBox" unique_id=1980457791]
+[node name="SFXVolBkgTexture" type="TextureRect" parent="SettingsVBox" unique_id=1707273815]
+self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+texture = ExtResource("3_mw62m")
+expand_mode = 1
 
-[node name="SFXVolLbl" type="RichTextLabel" parent="SettingsVBox/SFXVolHBox" unique_id=1415164380]
+[node name="SFXVolHBox" type="HBoxContainer" parent="SettingsVBox/SFXVolBkgTexture" unique_id=1980457791]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SFXVolLbl" type="RichTextLabel" parent="SettingsVBox/SFXVolBkgTexture/SFXVolHBox" unique_id=1415164380]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -270,12 +317,12 @@ text = "SFX Volume"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="SFXVolSliderHBox" type="HBoxContainer" parent="SettingsVBox/SFXVolHBox" unique_id=1005522497]
+[node name="SFXVolSliderHBox" type="HBoxContainer" parent="SettingsVBox/SFXVolBkgTexture/SFXVolHBox" unique_id=1005522497]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="SFXVolValueLbl" type="RichTextLabel" parent="SettingsVBox/SFXVolHBox/SFXVolSliderHBox" unique_id=1106550897]
-custom_minimum_size = Vector2(200, 0)
+[node name="SFXVolValueLbl" type="RichTextLabel" parent="SettingsVBox/SFXVolBkgTexture/SFXVolHBox/SFXVolSliderHBox" unique_id=1106550897]
+custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
 size_flags_horizontal = 2
 mouse_filter = 1
@@ -286,7 +333,7 @@ scroll_active = false
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="SFXVolHSlider" type="HSlider" parent="SettingsVBox/SFXVolHBox/SFXVolSliderHBox" unique_id=1963593176]
+[node name="SFXVolHSlider" type="HSlider" parent="SettingsVBox/SFXVolBkgTexture/SFXVolHBox/SFXVolSliderHBox" unique_id=1963593176]
 custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 size_flags_horizontal = 10
@@ -301,7 +348,7 @@ tick_count = 6
 ticks_on_borders = true
 ticks_position = 3
 
-[node name="SFXVolResetBtn" type="TextureButton" parent="SettingsVBox/SFXVolHBox/SFXVolSliderHBox" unique_id=85663223]
+[node name="SFXVolResetBtn" type="TextureButton" parent="SettingsVBox/SFXVolBkgTexture/SFXVolHBox/SFXVolSliderHBox" unique_id=85663223]
 modulate = Color(1, 1, 1, 0.78431374)
 custom_minimum_size = Vector2(45, 0)
 custom_maximum_size = Vector2(-1, 45)
@@ -311,11 +358,24 @@ texture_normal = ExtResource("5_3hh3s")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="WindowModeHBox" type="HBoxContainer" parent="SettingsVBox" unique_id=26132516]
+[node name="WindowModeBkgTexture" type="TextureRect" parent="SettingsVBox" unique_id=1965463398]
+self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+texture = ExtResource("3_mw62m")
+expand_mode = 1
 
-[node name="WindowModeLbl" type="RichTextLabel" parent="SettingsVBox/WindowModeHBox" unique_id=1161822251]
+[node name="WindowModeHBox" type="HBoxContainer" parent="SettingsVBox/WindowModeBkgTexture" unique_id=26132516]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WindowModeLbl" type="RichTextLabel" parent="SettingsVBox/WindowModeBkgTexture/WindowModeHBox" unique_id=1161822251]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -326,11 +386,11 @@ text = "Window Mode"
 scroll_active = false
 vertical_alignment = 1
 
-[node name="WindowModeSliderHBox" type="HBoxContainer" parent="SettingsVBox/WindowModeHBox" unique_id=2056262496]
+[node name="WindowModeSliderHBox" type="HBoxContainer" parent="SettingsVBox/WindowModeBkgTexture/WindowModeHBox" unique_id=2056262496]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="WindowModeOptionBtn" type="OptionButton" parent="SettingsVBox/WindowModeHBox/WindowModeSliderHBox" unique_id=1382023834]
+[node name="WindowModeOptionBtn" type="OptionButton" parent="SettingsVBox/WindowModeBkgTexture/WindowModeHBox/WindowModeSliderHBox" unique_id=1382023834]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_gne0f")
 theme_override_font_sizes/font_size = 20
@@ -346,11 +406,24 @@ popup/item_2/id = 3
 popup/item_3/text = "Exclusive Fullscreen"
 popup/item_3/id = 4
 
-[node name="SaveAndReturnButton" type="TextureButton" parent="SettingsVBox" unique_id=1333336401]
+[node name="SaveAndReturnBkgTexture" type="TextureRect" parent="SettingsVBox" unique_id=1039264050]
+self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+texture = ExtResource("3_mw62m")
+expand_mode = 1
 
-[node name="SaveAndReturnLbl" type="RichTextLabel" parent="SettingsVBox/SaveAndReturnButton" unique_id=1697146977]
+[node name="SaveAndReturnButton" type="TextureButton" parent="SettingsVBox/SaveAndReturnBkgTexture" unique_id=1333336401]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SaveAndReturnLbl" type="RichTextLabel" parent="SettingsVBox/SaveAndReturnBkgTexture/SaveAndReturnButton" unique_id=1697146977]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -363,13 +436,13 @@ theme_override_font_sizes/normal_font_size = 25
 text = "Save and Return"
 vertical_alignment = 1
 
-[connection signal="value_changed" from="SettingsVBox/SensHBox/SensSliderHBox/SensHSlider" to="." method="_set_sensitivity"]
-[connection signal="pressed" from="SettingsVBox/SensHBox/SensSliderHBox/SensResetBtn" to="." method="_on_sens_reset_btn_pressed"]
-[connection signal="value_changed" from="SettingsVBox/MasterVolHBox/MasterVolSliderHBox/MasterVolHSlider" to="." method="_set_master_volume"]
-[connection signal="pressed" from="SettingsVBox/MasterVolHBox/MasterVolSliderHBox/MasterVolResetBtn" to="." method="_on_master_vol_reset_btn_pressed"]
-[connection signal="value_changed" from="SettingsVBox/MusicVolHBox/MusicVolSliderHBox/MusicVolHSlider" to="." method="_set_music_volume"]
-[connection signal="pressed" from="SettingsVBox/MusicVolHBox/MusicVolSliderHBox/MusicVolResetBtn" to="." method="_on_music_vol_reset_btn_pressed"]
-[connection signal="value_changed" from="SettingsVBox/SFXVolHBox/SFXVolSliderHBox/SFXVolHSlider" to="." method="_set_sfx_volume"]
-[connection signal="pressed" from="SettingsVBox/SFXVolHBox/SFXVolSliderHBox/SFXVolResetBtn" to="." method="_on_sfx_vol_reset_btn_pressed"]
-[connection signal="item_selected" from="SettingsVBox/WindowModeHBox/WindowModeSliderHBox/WindowModeOptionBtn" to="." method="_set_window_mode"]
-[connection signal="pressed" from="SettingsVBox/SaveAndReturnButton" to="." method="_on_save_and_return_button_pressed"]
+[connection signal="value_changed" from="SettingsVBox/SensBkgTxtr/SensHBox/SensSliderHBox/SensHSlider" to="." method="_set_sensitivity"]
+[connection signal="pressed" from="SettingsVBox/SensBkgTxtr/SensHBox/SensSliderHBox/SensResetBtn" to="." method="_on_sens_reset_btn_pressed"]
+[connection signal="value_changed" from="SettingsVBox/MasterVolBkgTxtr/MasterVolHBox/MasterVolSliderHBox/MasterVolHSlider" to="." method="_set_master_volume"]
+[connection signal="pressed" from="SettingsVBox/MasterVolBkgTxtr/MasterVolHBox/MasterVolSliderHBox/MasterVolResetBtn" to="." method="_on_master_vol_reset_btn_pressed"]
+[connection signal="value_changed" from="SettingsVBox/MusicVolBkgTxtr/MusicVolHBox/MusicVolSliderHBox/MusicVolHSlider" to="." method="_set_music_volume"]
+[connection signal="pressed" from="SettingsVBox/MusicVolBkgTxtr/MusicVolHBox/MusicVolSliderHBox/MusicVolResetBtn" to="." method="_on_music_vol_reset_btn_pressed"]
+[connection signal="value_changed" from="SettingsVBox/SFXVolBkgTexture/SFXVolHBox/SFXVolSliderHBox/SFXVolHSlider" to="." method="_set_sfx_volume"]
+[connection signal="pressed" from="SettingsVBox/SFXVolBkgTexture/SFXVolHBox/SFXVolSliderHBox/SFXVolResetBtn" to="." method="_on_sfx_vol_reset_btn_pressed"]
+[connection signal="item_selected" from="SettingsVBox/WindowModeBkgTexture/WindowModeHBox/WindowModeSliderHBox/WindowModeOptionBtn" to="." method="_set_window_mode"]
+[connection signal="pressed" from="SettingsVBox/SaveAndReturnBkgTexture/SaveAndReturnButton" to="." method="_on_save_and_return_button_pressed"]
