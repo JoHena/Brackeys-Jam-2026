@@ -72,3 +72,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2013614, 0)
 light_color = Color(0.52761275, 0.35242546, 0.11439509, 1)
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=999067760]
+bus = &"SFX"

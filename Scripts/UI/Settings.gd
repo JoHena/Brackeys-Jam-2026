@@ -17,10 +17,19 @@ const DEFAULT_MUSIC_VOLUME: float = 1.0
 const DEFAULT_SFX_VOLUME: float = 1.0
 const DEFAULT_WINDOW_MODE: int = 2 # Fullscreen (Index 0 = Windowed, 1 = Maximized, 2 = Fullscreen, 3 = Exclusive Fullcreen)
 
+var master_bus_index: int
+var music_bus_index: int
+var sfx_bus_index: int
+
+## Emitted when settings menu is saved which is when new settings should be applied
+signal on_settings_save
 
 
 ## Initialize settings, called before _ready()
 func _init() -> void:
+	master_bus_index = AudioServer.get_bus_index("Master")
+	music_bus_index = AudioServer.get_bus_index("Music")
+	sfx_bus_index = AudioServer.get_bus_index("SFX")
 	load_settings()
 
 
@@ -35,6 +44,12 @@ func save_settings() -> void:
 	config.set_value("general", "window_mode", window_mode)
 	
 	config.save(_SETTINGS_FILE_PATH)
+	on_settings_save.emit()
+	
+	## Apply audio settings
+	AudioServer.set_bus_volume_db(master_bus_index, linear_to_db(master_volume))
+	AudioServer.set_bus_volume_db(music_bus_index, linear_to_db(music_volume))
+	AudioServer.set_bus_volume_db(sfx_bus_index, linear_to_db(sfx_volume))
 
 
 ## Loads the config file and initializes all settings variables
