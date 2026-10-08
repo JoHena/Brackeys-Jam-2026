@@ -284,3 +284,4 @@ size = 0.6
 far = 1.03
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=134379997]
+bus = &"SFX"

@@ -1,6 +1,9 @@
 extends Node
 class_name PauseMenu
 
+@onready var settings_menu: SettingsMenu = $SettingsMenu
+@onready var pause_buttons: VBoxContainer = $ButtonsVBox
+
 
 func _ready() -> void:
 	self.visible = false
@@ -12,7 +15,7 @@ func _input(event) -> void:
 		_toggle_pause_menu()
 
 
-## Hides/Shows the pause menu
+## Hides/Shows the pause menu 
 func _toggle_pause_menu() -> void:
 	self.visible = not self.visible
 	
@@ -30,11 +33,17 @@ func _on_resume_button_pressed():
 	_toggle_pause_menu()
 
 
-## Opens the settings menu NOTE: currently not implemented so button is disabled
+## Hides the pause buttons and opens the settings menu
 func _on_settings_button_pressed():
-	pass # Replace with function body.
+	pause_buttons.visible = false
+	settings_menu.toggle_visibility()
 
 
 ## Closes the game
 func _on_quit_button_pressed():
 	get_tree().quit()
+
+
+## When settings close signal is emitted, show the pause buttons again
+func _on_settings_save_and_close():
+	pause_buttons.visible = true

@@ -1,0 +1,448 @@
+[gd_scene format=3 uid="uid://dro2kmcfmt7ba"]
+
+[ext_resource type="Script" uid="uid://0enorweicnyq" path="res://Scripts/UI/SettingsMenu.gd" id="1_83xbh"]
+[ext_resource type="FontFile" uid="uid://dc8by4tv176p3" path="res://Fonts/SyneMono-Regular.ttf" id="1_gne0f"]
+[ext_resource type="Texture2D" uid="uid://bqltxbkdlx104" path="res://Textures/UI/divider-fade-001.png" id="1_q4b8a"]
+[ext_resource type="Texture2D" uid="uid://c8aad27rgh8yb" path="res://Textures/UI/red_gradient_ui_button.png" id="3_mw62m"]
+[ext_resource type="Texture2D" uid="uid://0uw8px0wj5ln" path="res://Textures/UI/reset_icon.png" id="5_3hh3s"]
+[ext_resource type="Texture2D" uid="uid://bsmulgbidyedj" path="res://Textures/UI/slider_grabber.png" id="5_v1gh5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_83xbh"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.4)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 6
+
+[node name="SettingsMenu" type="Control" unique_id=548582870]
+z_index = 10
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_83xbh")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1402216337]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.39215687)
+
+[node name="DividerTexture1" type="TextureRect" parent="." unique_id=129810483]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.15
+anchor_right = 0.525
+anchor_bottom = 0.225
+texture = ExtResource("1_q4b8a")
+
+[node name="DividerTexture2" type="TextureRect" parent="." unique_id=843224085]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.475
+anchor_top = 0.15
+anchor_right = 0.9
+anchor_bottom = 0.225
+texture = ExtResource("1_q4b8a")
+flip_h = true
+
+[node name="SettingsTitleLbl" type="RichTextLabel" parent="." unique_id=662774948]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.05
+anchor_right = 0.7
+anchor_bottom = 0.15
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_gne0f")
+theme_override_font_sizes/normal_font_size = 50
+text = "Settings"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SettingsVBox" type="VBoxContainer" parent="." unique_id=222908020]
+clip_contents = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2
+anchor_top = 0.275
+anchor_right = 0.8
+anchor_bottom = 0.95
+
+[node name="SensBkgTxtr" type="TextureRect" parent="SettingsVBox" unique_id=2062209483]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+texture = ExtResource("3_mw62m")
+expand_mode = 1
+
+[node name="SensHBox" type="HBoxContainer" parent="SettingsVBox/SensBkgTxtr" unique_id=597080547]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SensLbl" type="RichTextLabel" parent="SettingsVBox/SensBkgTxtr/SensHBox" unique_id=1417368317]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_gne0f")
+theme_override_font_sizes/normal_font_size = 25
+text = "Sensitivity"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="SensSliderHBox" type="HBoxContainer" parent="SettingsVBox/SensBkgTxtr/SensHBox" unique_id=249205856]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SensValueLbl" type="RichTextLabel" parent="SettingsVBox/SensBkgTxtr/SensHBox/SensSliderHBox" unique_id=747327372]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_gne0f")
+theme_override_font_sizes/normal_font_size = 20
+text = "1.0"
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SensHSlider" type="HSlider" parent="SettingsVBox/SensBkgTxtr/SensHBox/SensSliderHBox" unique_id=810448665]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
+theme_override_icons/grabber = ExtResource("5_v1gh5")
+theme_override_icons/grabber_highlight = ExtResource("5_v1gh5")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_83xbh")
+min_value = 0.1
+max_value = 5.0
+step = 0.1
+value = 1.0
+tick_count = 6
+ticks_on_borders = true
+ticks_position = 3
+
+[node name="SensResetBtn" type="TextureButton" parent="SettingsVBox/SensBkgTxtr/SensHBox/SensSliderHBox" unique_id=2127359888]
+modulate = Color(1, 1, 1, 0.78431374)
+custom_minimum_size = Vector2(45, 0)
+custom_maximum_size = Vector2(-1, 45)
+layout_mode = 2
+action_mode = 0
+texture_normal = ExtResource("5_3hh3s")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="MasterVolBkgTxtr" type="TextureRect" parent="SettingsVBox" unique_id=1848296344]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+texture = ExtResource("3_mw62m")
+expand_mode = 1
+
+[node name="MasterVolHBox" type="HBoxContainer" parent="SettingsVBox/MasterVolBkgTxtr" unique_id=817744306]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MasterVolLbl" type="RichTextLabel" parent="SettingsVBox/MasterVolBkgTxtr/MasterVolHBox" unique_id=1609884033]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_gne0f")
+theme_override_font_sizes/normal_font_size = 25
+text = "Master Volume"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="MasterVolSliderHBox" type="HBoxContainer" parent="SettingsVBox/MasterVolBkgTxtr/MasterVolHBox" unique_id=309028706]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MasterVolValueLbl" type="RichTextLabel" parent="SettingsVBox/MasterVolBkgTxtr/MasterVolHBox/MasterVolSliderHBox" unique_id=477214993]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_gne0f")
+theme_override_font_sizes/normal_font_size = 20
+text = "100%"
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="MasterVolHSlider" type="HSlider" parent="SettingsVBox/MasterVolBkgTxtr/MasterVolHBox/MasterVolSliderHBox" unique_id=1759004495]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
+theme_override_icons/grabber = ExtResource("5_v1gh5")
+theme_override_icons/grabber_highlight = ExtResource("5_v1gh5")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_83xbh")
+max_value = 1.0
+step = 0.01
+value = 1.0
+tick_count = 6
+ticks_on_borders = true
+ticks_position = 3
+
+[node name="MasterVolResetBtn" type="TextureButton" parent="SettingsVBox/MasterVolBkgTxtr/MasterVolHBox/MasterVolSliderHBox" unique_id=589396248]
+modulate = Color(1, 1, 1, 0.78431374)
+custom_minimum_size = Vector2(45, 0)
+custom_maximum_size = Vector2(-1, 45)
+layout_mode = 2
+action_mode = 0
+texture_normal = ExtResource("5_3hh3s")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="MusicVolBkgTxtr" type="TextureRect" parent="SettingsVBox" unique_id=437163551]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+texture = ExtResource("3_mw62m")
+expand_mode = 1
+
+[node name="MusicVolHBox" type="HBoxContainer" parent="SettingsVBox/MusicVolBkgTxtr" unique_id=1897928310]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MusicVolLbl" type="RichTextLabel" parent="SettingsVBox/MusicVolBkgTxtr/MusicVolHBox" unique_id=1701744661]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_gne0f")
+theme_override_font_sizes/normal_font_size = 25
+text = "Music Volume"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="MusicVolSliderHBox" type="HBoxContainer" parent="SettingsVBox/MusicVolBkgTxtr/MusicVolHBox" unique_id=1620700894]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MusicVolValueLbl" type="RichTextLabel" parent="SettingsVBox/MusicVolBkgTxtr/MusicVolHBox/MusicVolSliderHBox" unique_id=1354481429]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_gne0f")
+theme_override_font_sizes/normal_font_size = 20
+text = "100%"
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="MusicVolHSlider" type="HSlider" parent="SettingsVBox/MusicVolBkgTxtr/MusicVolHBox/MusicVolSliderHBox" unique_id=1178409606]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
+theme_override_icons/grabber = ExtResource("5_v1gh5")
+theme_override_icons/grabber_highlight = ExtResource("5_v1gh5")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_83xbh")
+max_value = 1.0
+step = 0.01
+value = 1.0
+tick_count = 6
+ticks_on_borders = true
+ticks_position = 3
+
+[node name="MusicVolResetBtn" type="TextureButton" parent="SettingsVBox/MusicVolBkgTxtr/MusicVolHBox/MusicVolSliderHBox" unique_id=1742581324]
+modulate = Color(1, 1, 1, 0.78431374)
+custom_minimum_size = Vector2(45, 0)
+custom_maximum_size = Vector2(-1, 45)
+layout_mode = 2
+action_mode = 0
+texture_normal = ExtResource("5_3hh3s")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="SFXVolBkgTexture" type="TextureRect" parent="SettingsVBox" unique_id=1707273815]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+texture = ExtResource("3_mw62m")
+expand_mode = 1
+
+[node name="SFXVolHBox" type="HBoxContainer" parent="SettingsVBox/SFXVolBkgTexture" unique_id=1980457791]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SFXVolLbl" type="RichTextLabel" parent="SettingsVBox/SFXVolBkgTexture/SFXVolHBox" unique_id=1415164380]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_gne0f")
+theme_override_font_sizes/normal_font_size = 25
+text = "SFX Volume"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="SFXVolSliderHBox" type="HBoxContainer" parent="SettingsVBox/SFXVolBkgTexture/SFXVolHBox" unique_id=1005522497]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SFXVolValueLbl" type="RichTextLabel" parent="SettingsVBox/SFXVolBkgTexture/SFXVolHBox/SFXVolSliderHBox" unique_id=1106550897]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_gne0f")
+theme_override_font_sizes/normal_font_size = 20
+text = "100%"
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SFXVolHSlider" type="HSlider" parent="SettingsVBox/SFXVolBkgTexture/SFXVolHBox/SFXVolSliderHBox" unique_id=1963593176]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_vertical = 1
+theme_override_icons/grabber = ExtResource("5_v1gh5")
+theme_override_icons/grabber_highlight = ExtResource("5_v1gh5")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxFlat_83xbh")
+max_value = 1.0
+step = 0.01
+value = 1.0
+tick_count = 6
+ticks_on_borders = true
+ticks_position = 3
+
+[node name="SFXVolResetBtn" type="TextureButton" parent="SettingsVBox/SFXVolBkgTexture/SFXVolHBox/SFXVolSliderHBox" unique_id=85663223]
+modulate = Color(1, 1, 1, 0.78431374)
+custom_minimum_size = Vector2(45, 0)
+custom_maximum_size = Vector2(-1, 45)
+layout_mode = 2
+action_mode = 0
+texture_normal = ExtResource("5_3hh3s")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="WindowModeBkgTexture" type="TextureRect" parent="SettingsVBox" unique_id=1965463398]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+texture = ExtResource("3_mw62m")
+expand_mode = 1
+
+[node name="WindowModeHBox" type="HBoxContainer" parent="SettingsVBox/WindowModeBkgTexture" unique_id=26132516]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WindowModeLbl" type="RichTextLabel" parent="SettingsVBox/WindowModeBkgTexture/WindowModeHBox" unique_id=1161822251]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_gne0f")
+theme_override_font_sizes/normal_font_size = 25
+text = "Window Mode"
+scroll_active = false
+vertical_alignment = 1
+
+[node name="WindowModeSliderHBox" type="HBoxContainer" parent="SettingsVBox/WindowModeBkgTexture/WindowModeHBox" unique_id=2056262496]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="WindowModeOptionBtn" type="OptionButton" parent="SettingsVBox/WindowModeBkgTexture/WindowModeHBox/WindowModeSliderHBox" unique_id=1382023834]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_gne0f")
+theme_override_font_sizes/font_size = 20
+alignment = 1
+selected = 1
+item_count = 4
+popup/item_0/text = "Windowed"
+popup/item_0/id = 0
+popup/item_1/text = "Maximized"
+popup/item_1/id = 2
+popup/item_2/text = "Fullscreen"
+popup/item_2/id = 3
+popup/item_3/text = "Exclusive Fullscreen"
+popup/item_3/id = 4
+
+[node name="SaveAndReturnBkgTexture" type="TextureRect" parent="SettingsVBox" unique_id=1039264050]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+texture = ExtResource("3_mw62m")
+expand_mode = 1
+
+[node name="SaveAndReturnButton" type="TextureButton" parent="SettingsVBox/SaveAndReturnBkgTexture" unique_id=1333336401]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.01
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SaveAndReturnLbl" type="RichTextLabel" parent="SettingsVBox/SaveAndReturnBkgTexture/SaveAndReturnButton" unique_id=1697146977]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_fonts/normal_font = ExtResource("1_gne0f")
+theme_override_font_sizes/normal_font_size = 25
+text = "Save and Return"
+vertical_alignment = 1
+
+[connection signal="value_changed" from="SettingsVBox/SensBkgTxtr/SensHBox/SensSliderHBox/SensHSlider" to="." method="_set_sensitivity"]
+[connection signal="pressed" from="SettingsVBox/SensBkgTxtr/SensHBox/SensSliderHBox/SensResetBtn" to="." method="_on_sens_reset_btn_pressed"]
+[connection signal="value_changed" from="SettingsVBox/MasterVolBkgTxtr/MasterVolHBox/MasterVolSliderHBox/MasterVolHSlider" to="." method="_set_master_volume"]
+[connection signal="pressed" from="SettingsVBox/MasterVolBkgTxtr/MasterVolHBox/MasterVolSliderHBox/MasterVolResetBtn" to="." method="_on_master_vol_reset_btn_pressed"]
+[connection signal="value_changed" from="SettingsVBox/MusicVolBkgTxtr/MusicVolHBox/MusicVolSliderHBox/MusicVolHSlider" to="." method="_set_music_volume"]
+[connection signal="pressed" from="SettingsVBox/MusicVolBkgTxtr/MusicVolHBox/MusicVolSliderHBox/MusicVolResetBtn" to="." method="_on_music_vol_reset_btn_pressed"]
+[connection signal="value_changed" from="SettingsVBox/SFXVolBkgTexture/SFXVolHBox/SFXVolSliderHBox/SFXVolHSlider" to="." method="_set_sfx_volume"]
+[connection signal="pressed" from="SettingsVBox/SFXVolBkgTexture/SFXVolHBox/SFXVolSliderHBox/SFXVolResetBtn" to="." method="_on_sfx_vol_reset_btn_pressed"]
+[connection signal="item_selected" from="SettingsVBox/WindowModeBkgTexture/WindowModeHBox/WindowModeSliderHBox/WindowModeOptionBtn" to="." method="_set_window_mode"]
+[connection signal="pressed" from="SettingsVBox/SaveAndReturnBkgTexture/SaveAndReturnButton" to="." method="_on_save_and_return_button_pressed"]
