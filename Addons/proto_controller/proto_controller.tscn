@@ -52,7 +52,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 [node name="ShapeCast3D" type="ShapeCast3D" parent="Head/Camera3D" unique_id=1016037235]
 shape = SubResource("SphereShape3D_g4v7s")
 target_position = Vector3(0, 0, -2)
-collision_mask = 4
+collision_mask = 12
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Head/Camera3D" unique_id=1038126494]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.72398233)
@@ -63,6 +63,9 @@ mesh = SubResource("QuadMesh_yf5fn")
 transform = Transform3D(0.003, 0, 0, 0, 0.003, 0, 0, 0, 0.003, 0, 0, -1.9983517)
 no_depth_test = true
 texture = ExtResource("3_62upf")
+
+[node name="MovableTarget" type="Node3D" parent="Head/Camera3D" unique_id=1250512308]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
 
 [node name="Hand" type="Node3D" parent="Head" unique_id=1367121417]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.9947164)

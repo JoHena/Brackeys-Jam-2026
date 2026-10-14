@@ -69,6 +69,11 @@ var current_interactable: Interactable = null
 var is_interacting: bool = false
 var is_animation_playing: bool = true
 
+## Currently highlighted movable.
+var current_movable: Movable = null
+## True if player is holding a movable object
+var is_moving_obj: bool = false
+
 
 ## IMPORTANT REFERENCES
 @onready var head: Node3D = $Head
@@ -77,6 +82,7 @@ var is_animation_playing: bool = true
 @onready var shape_cast_3d: ShapeCast3D = $Head/Camera3D/ShapeCast3D
 @onready var audio_player: AudioStreamPlayer3D = $AudioStreamPlayer3D
 @onready var pointer = $Head/Camera3D/Dot
+@onready var movable_target: Node3D = $Head/Camera3D/MovableTarget
 
 
 func _ready() -> void:
@@ -104,7 +110,10 @@ func _input(_event: InputEvent) -> void:
 		pointer.visible = false
 		return
 
-	# Start interaction with an interactable.
+	if is_moving_obj:
+		return
+
+	# Start interaction with an interactable/movable.
 	if Input.is_action_just_pressed("Interact"):
 		if shape_cast_3d.is_colliding():
 			var collided = shape_cast_3d.get_collider(0)
@@ -112,6 +121,11 @@ func _input(_event: InputEvent) -> void:
 			if collided is Interactable:
 				clear_interactable_highlight()
 				collided.toggle_use()
+
+			elif collided is Movable:
+				clear_interactable_highlight()
+				collided.toggle_movable_use()
+
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -218,31 +232,39 @@ func _physics_process(delta: float) -> void:
 
 ## Detects which interactable the player is currently looking at.
 func update_interaction() -> void:
-	if is_interacting or is_animation_playing:
+	if is_interacting or is_moving_obj or is_animation_playing:
 		clear_interactable_highlight()
 		return
 
 	if shape_cast_3d.is_colliding():
 		var target = shape_cast_3d.get_collider(0)
 
-		if target is Interactable:
+		if target is Interactable: # Make interactable glow
 			if current_interactable != target:
 				clear_interactable_highlight()
-
 				current_interactable = target
 				current_interactable.set_glow(true)
-
 			return
 
+		if target is Movable: # Make movable glow
+			if current_movable != target:
+				clear_interactable_highlight()
+				current_movable = target
+				current_movable.set_glow(true)
+			return
+
+	# If not looking at an interactable or movable, clear previous highlights
 	clear_interactable_highlight()
 
 
-## Turns off the previous interactable's glow.
+## Turns off the previous interactable's or movable's glow.
 func clear_interactable_highlight() -> void:
 	if is_instance_valid(current_interactable):
 		current_interactable.set_glow(false)
-
 	current_interactable = null
+	if is_instance_valid(current_movable):
+		current_movable.set_glow(false)
+	current_movable = null
 
 
 # -------------------------------------------------------------------

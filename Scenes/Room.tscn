@@ -1,9 +1,11 @@
 [gd_scene format=4 uid="uid://cmsei1ulpnh8f"]
 
+[ext_resource type="PackedScene" uid="uid://bcwxnngd7oogv" path="res://Scenes/Furniture/test_movable_chair.tscn" id="1_f1ah8"]
 [ext_resource type="Texture2D" uid="uid://45p01og8q0m" path="res://Models/room_walls_Ucupaint wall Color.png" id="1_mimag"]
 [ext_resource type="Texture2D" uid="uid://b6yq2mrlvjrso" path="res://Models/room_walls_Ucupaint wall Roughness.png" id="2_ijr7e"]
 [ext_resource type="PackedScene" uid="uid://noxabka6anog" path="res://Models/Low Poly Furniture/Carpets/Carpet C.fbx" id="3_khqja"]
 [ext_resource type="PackedScene" uid="uid://bxsy3n0i40k4d" path="res://Models/Low Poly Furniture/Chairs/Chair D.fbx" id="4_l0f8h"]
+[ext_resource type="Script" uid="uid://l15rm3i1pg55" path="res://Scripts/Movable.gd" id="5_f1ah8"]
 [ext_resource type="PackedScene" uid="uid://de2uqltwq1apm" path="res://Models/Low Poly Furniture/Shelves/Wall Shelf A.fbx" id="5_vofke"]
 [ext_resource type="PackedScene" uid="uid://d1ici6j58w8dh" path="res://Models/Low Poly Furniture/Lights/Ceiling Light.fbx" id="6_f1ah8"]
 [ext_resource type="PackedScene" uid="uid://cjv2e1gdvyg20" path="res://Models/Low Poly Furniture/Doors/Door B.fbx" id="8_b7nhj"]
@@ -162,6 +164,9 @@ transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 
 [node name="Furniture" type="Node" parent="." unique_id=1713787002]
 
+[node name="StaticBody3D" parent="Furniture" unique_id=927214927 instance=ExtResource("1_f1ah8")]
+transform = Transform3D(-0.1821795, 0, 0.08252654, 0, 0.2, 0, -0.08252654, 0, -0.1821795, -1.4749515, 0.9510956, 0.46974385)
+
 [node name="floor_walls" type="MeshInstance3D" parent="Furniture" unique_id=1168494977]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0)
 mesh = SubResource("ArrayMesh_jkdf5")
@@ -190,11 +195,12 @@ transform = Transform3D(0.48349318, 0, 0, 0, 1.1239717, 0, 0, 0, 1.0242958, 1.12
 
 [node name="Chair D" parent="Furniture" unique_id=2064234465 instance=ExtResource("4_l0f8h")]
 transform = Transform3D(0.225, 0, 0, 0, 0.325, 0, 0, 0, 0.25, 1.1078035, 0.385077, 0.16342515)
+script = ExtResource("5_f1ah8")
 
 [node name="Wall Shelf A" parent="Furniture" unique_id=799981032 instance=ExtResource("5_vofke")]
 transform = Transform3D(-0.09997837, 0, 0.002080163, 0, 0.099999994, 0, -0.002080163, 0, -0.09997837, 0.66949815, 1.880928, 1.9462807)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Furniture/Wall Shelf A/Wall shelf A" parent_id_path=PackedInt32Array(799981032, 1648776191) index="0" unique_id=1112539595]
+[node name="StaticBody3D" type="StaticBody3D" parent="Furniture/Wall Shelf A/Wall shelf A" parent_id_path=PackedInt32Array(799981032, 1912795924) index="0" unique_id=1112539595]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0001158081, -0.004028054, -0.0015946953)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Furniture/Wall Shelf A/Wall shelf A/StaticBody3D" unique_id=919542377]
@@ -203,7 +209,7 @@ shape = SubResource("BoxShape3D_ijr7e")
 [node name="Wall Shelf A2" parent="Furniture" unique_id=416572313 instance=ExtResource("5_vofke")]
 transform = Transform3D(-0.099999055, 0, 0.00043434894, 0, 0.09999999, 0, -0.00043434894, 0, -0.099999055, 1.236489, 2.292697, 1.9310172)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Furniture/Wall Shelf A2/Wall shelf A" parent_id_path=PackedInt32Array(416572313, 1648776191) index="0" unique_id=1253873414]
+[node name="StaticBody3D" type="StaticBody3D" parent="Furniture/Wall Shelf A2/Wall shelf A" parent_id_path=PackedInt32Array(416572313, 1912795924) index="0" unique_id=1253873414]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0001158081, -0.004028054, -0.0015946953)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Furniture/Wall Shelf A2/Wall shelf A/StaticBody3D" unique_id=221568748]
