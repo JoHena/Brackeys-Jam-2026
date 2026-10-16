@@ -1,46 +1,29 @@
+
 extends StaticBody3D
 class_name Interactable
-## Base class for anything the player can walk up to, "use", and get locked
-## into a dedicated camera view for (PC, intercom, etc).
-##
-## Handles:
-##   - swapping to this object's Camera3D while in use, smoothed by the
-##     shared CameraTransition autoload (falls back to an instant cut if
-##     that autoload isn't present, so this still works standalone)
-##   - toggling player movement/interaction state
-##   - the common ui_cancel-to-exit and Interact-click flow
-##   - playing the click SFX
-##
-## Subclasses hook into the flow via the virtual _on_* methods below rather
-## than overriding _input/toggle_use directly.
 
-## Emitted whenever the interactable is turned on/off, so external systems
-## (like the Player) can react without this class needing to know their
-## internals. Fires after the camera transition has fully completed.
 signal interaction_toggled(active: bool)
+signal object_clicked(object: CollisionObject3D)
 
+@export_group("Interaction")
 @export var click_sfx: AudioStream = preload("res://SFX/mouse_click_1.ogg")
-## How long the fade-based camera transition takes. Ignored if the
-## CameraTransition autoload isn't present (instant cut instead).
 @export var transition_duration: float = 0.25
 
 @export_group("Pointer")
-## Turn off for interactables that already have their own cursor (e.g. the
-## PC's SubViewport/Control cursor) and don't need a 3D reticle too.
 @export var use_pointer: bool = true
-## Scene for the on-screen pointer/reticle. Leave assigned even if
-## use_pointer starts false — flip use_pointer at runtime to enable it.
 @export var pointer_scene: PackedScene = preload("res://Scenes/Pointer.tscn")
-## How far in front of camera_3d the pointer sits.
 @export var pointer_distance: float = 2.0
-## Half-width/half-height (in world units, at pointer_distance) of the
-## flat plane the pointer is allowed to move within.
 @export var pointer_bounds: Vector2 = Vector2(1.0, 0.6)
-## World units the pointer moves per pixel of mouse motion.
 @export var pointer_sensitivity: float = 0.002
-@export var pointer_sensitivity_scale := 0.5
-
+@export var pointer_sensitivity_scale: float = 0.5
 @export var pointer_size: float = 0.01
+
+@export_group("Interaction Raycast")
+@export var interaction_distance: float = 10.0
+@export_flags_3d_physics var interaction_mask: int = 1
+@export var exclude_self_from_raycast: bool = true
+
+@export_group("Highlight")
 @export var highlight: InteractableHighlight
 
 @onready var camera_3d: Camera3D = $InteractableCamera
@@ -48,71 +31,174 @@ signal interaction_toggled(active: bool)
 
 var player: Player
 var is_using: bool = false
-## True for the duration of a camera fade — blocks re-entrant toggle_use()
-## calls (e.g. spam-clicking) so is_using can never desync from what
-## camera_3d.current actually shows.
 var is_transitioning: bool = false
+
 var pointer: Sprite3D
-var pointer_local_offset: Vector2
+var pointer_local_offset: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
-	# Cache the player reference once; warn loudly if it's missing instead
-	# of crashing later inside toggle_use().
 	player = get_tree().get_first_node_in_group("Player") as Player
+
 	if player == null:
-		push_error("%s: no node in group 'Player' found." % name)
+		push_error("%s: No node in group 'Player' found." % name)
 
-	if use_pointer and pointer_scene:
-		pointer = pointer_scene.instantiate()
-		add_child(pointer)
-		pointer.pixel_size = pointer_size
-		pointer.no_depth_test = true
-		pointer.visible = false
+	_setup_pointer()
 
-	# Only listen for input while actually being used.
 	set_process_input(false)
+
 	interaction_toggled.connect(_on_interaction_toggled)
 
 
-## Now routes the actual camera swap through CameraTransition (if the
-## autoload is registered) so entering/exiting an Interactable fades
-## instead of cutting, same as the intro cinematic. Guarded by
-## is_transitioning so a second call while fading is simply ignored.
-func toggle_use() -> void:
-	player.visible = is_using
-	if is_transitioning:
+# --------------------------------------------------
+# Pointer Setup
+# --------------------------------------------------
+
+func _setup_pointer() -> void:
+	if pointer != null or pointer_scene == null:
 		return
+
+	pointer = pointer_scene.instantiate() as Sprite3D
+
+	if pointer == null:
+		push_error("%s: Pointer scene must have a Sprite3D root." % name)
+		return
+
+	add_child(pointer)
+
+	pointer.pixel_size = pointer_size
+	pointer.no_depth_test = true
+	pointer.visible = false
+
+
+func set_pointer_enabled(enabled: bool) -> void:
+	use_pointer = enabled
+
+	if enabled and pointer == null:
+		_setup_pointer()
+
+	if pointer:
+		pointer.visible = enabled and is_using
+
+		if enabled and is_using:
+			_reset_pointer_transform()
+
+
+func _reset_pointer_transform() -> void:
+	if pointer == null:
+		return
+
+	pointer_local_offset = Vector2.ZERO
+
+	pointer.global_rotation = camera_3d.global_rotation
+	pointer.global_position = _pointer_plane_position(
+		pointer_local_offset
+	)
+
+
+
+func _update_pointer_position(event: InputEventMouseMotion) -> void:
+	if pointer == null or not use_pointer:
+		return
+
+	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
+
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		return
+
+	var aspect_ratio: float = viewport_size.x / viewport_size.y
+
+	var visible_height: float
+	var visible_width: float
+
+	if camera_3d.keep_aspect == Camera3D.KEEP_HEIGHT:
+		visible_height = camera_3d.size
+		visible_width = visible_height * aspect_ratio
+	else:
+		visible_width = camera_3d.size
+		visible_height = visible_width / aspect_ratio
+
+	pointer_local_offset.x += (
+		event.relative.x / viewport_size.x
+	) * visible_width * pointer_sensitivity_scale
+
+	pointer_local_offset.y -= (
+		event.relative.y / viewport_size.y
+	) * visible_height * pointer_sensitivity_scale
+
+	pointer_local_offset.x = clampf(
+		pointer_local_offset.x,
+		-visible_width * 0.5,
+		visible_width * 0.5
+	)
+
+	pointer_local_offset.y = clampf(
+		pointer_local_offset.y,
+		-visible_height * 0.5,
+		visible_height * 0.5
+	)
+
+	pointer.global_position = _pointer_plane_position(
+		pointer_local_offset
+	)
+
+	pointer.global_rotation = camera_3d.global_rotation
+
+
+func _pointer_plane_position(offset: Vector2) -> Vector3:
+	var basis: Basis = camera_3d.global_transform.basis
+
+	return (
+		camera_3d.global_position
+		- basis.z * pointer_distance
+		+ basis.x * offset.x
+		+ basis.y * offset.y
+	)
+
+
+# --------------------------------------------------
+# Camera / Interaction State
+# --------------------------------------------------
+
+func toggle_use() -> void:
+	if is_transitioning or player == null:
+		return
+
 	is_transitioning = true
 
-	var going_active := not is_using
+	var going_active: bool = not is_using
 
-	var transitioner = get_node_or_null("/root/CameraTransition")
+	var transitioner: Node = get_node_or_null(
+		"/root/CameraTransition"
+	)
+
 	if transitioner:
-		await transitioner.switch_camera(func(): _apply_use_state(going_active), transition_duration)
+		await transitioner.switch_camera(
+			func() -> void:
+				_apply_use_state(going_active),
+			transition_duration
+		)
 	else:
 		_apply_use_state(going_active)
 
 	is_transitioning = false
 
 
-## The actual state flip that used to live directly in toggle_use() —
-## split out so it can be handed to CameraTransition as a callback.
 func _apply_use_state(active: bool) -> void:
 	is_using = active
 
-	# Setting current = false here would leave Godot to auto-pick whatever
-	# camera it finds first in the scene (often not the player's) — so on
-	# exit, explicitly reactivate the player's camera instead.
 	if active:
 		camera_3d.current = true
-	elif player:
+	else:
 		player.activate_camera()
+
+	player.visible = not active
 
 	set_process_input(active)
 
 	if pointer:
 		pointer.visible = active and use_pointer
+
 		if active:
 			_reset_pointer_transform()
 
@@ -124,98 +210,132 @@ func _apply_use_state(active: bool) -> void:
 	interaction_toggled.emit(active)
 
 
-## Snaps the pointer to camera_3d's rotation, centered on the flat plane
-## pointer_distance in front of it — so it starts centered instead of
-## wherever it was left (or the origin) before the first mouse-motion
-## event moves it.
-func _reset_pointer_transform() -> void:
-	if pointer == null:
-		return
-	pointer_local_offset = Vector2.ZERO
-	pointer.global_rotation = camera_3d.global_rotation
-	pointer.global_position = _pointer_plane_position(pointer_local_offset)
-
-
-func _update_pointer_position(event: InputEventMouseMotion) -> void:
-	if pointer == null or not use_pointer:
-		return
-	# Move linearly along the camera's own right/up axes rather than going
-	# through perspective unprojection — keeps the pointer confined to a
-	# flat plane fixed in front of the camera, so it moves like a 2D
-	# cursor regardless of FOV or viewport size. event.relative is used
-	# (not event.position) since position freezes in MOUSE_MODE_CAPTURED.
-	pointer_local_offset.x += event.relative.x * pointer_sensitivity * pointer_sensitivity_scale
-	pointer_local_offset.y -= event.relative.y * pointer_sensitivity * pointer_sensitivity_scale
-	pointer.global_position = _pointer_plane_position(pointer_local_offset)
-	pointer.global_rotation = camera_3d.global_rotation
-
-
-## Converts a local (x = right, y = up) offset into a world position on
-## the flat plane pointer_distance in front of camera_3d.
-func _pointer_plane_position(offset: Vector2) -> Vector3:
-	var _basis := camera_3d.global_transform.basis
-	return camera_3d.global_position \
-		- _basis.z * pointer_distance \
-		+ _basis.x * offset.x \
-		+ _basis.y * offset.y
-
-
 func _on_interaction_toggled(active: bool) -> void:
 	if player == null:
 		return
+
 	player.is_interacting = active
 	player.can_move = not active
 
 
+# --------------------------------------------------
+# 3D Object Detection
+# --------------------------------------------------
+
+
+func get_clicked_object() -> CollisionObject3D:
+	var screen_position: Vector2
+
+	if use_pointer and pointer != null:
+		screen_position = camera_3d.unproject_position(
+			pointer.global_position
+		)
+	else:
+		screen_position = get_viewport().get_visible_rect().size * 0.5
+
+	var origin: Vector3 = camera_3d.project_ray_origin(
+		screen_position
+	)
+
+	var direction: Vector3 = camera_3d.project_ray_normal(
+		screen_position
+	)
+
+	var end: Vector3 = origin + direction * interaction_distance
+
+	var query := PhysicsRayQueryParameters3D.create(
+		origin,
+		end,
+		interaction_mask
+	)
+
+	query.collide_with_areas = true
+	query.collide_with_bodies = true
+
+	var excluded: Array[RID] = [get_rid()]
+
+	if player != null:
+		excluded.append(player.get_rid())
+
+	query.exclude = excluded
+
+	var result: Dictionary = get_world_3d().direct_space_state.intersect_ray(query)
+
+	if result.is_empty():
+		return null
+
+	var collider: CollisionObject3D = result["collider"] as CollisionObject3D
+
+	print("Pointer screen: ", screen_position)
+	print("Ray hit: ", collider.name)
+	print("Hit position: ", result["position"])
+
+	return collider
+
+# --------------------------------------------------
+# Input
+# --------------------------------------------------
+
 func _input(event: InputEvent) -> void:
-	if not is_using:
+	if not is_using or is_transitioning:
 		return
 
 	if event.is_action_pressed("ui_cancel"):
-		toggle_use()
 		get_viewport().set_input_as_handled()
+		toggle_use()
 		return
-
-	if Input.is_action_just_pressed("Interact"):
-		_play_click_sfx()
-		_on_interact_input(event)
-	else:
-		_on_other_input(event)
 
 	if event is InputEventMouseMotion:
 		_update_pointer_position(event)
 
+	if event.is_action_pressed("Interact"):
+		if event.is_echo():
+			return
+
+		_play_click_sfx()
+		_on_interact_input(event)
+
+		get_viewport().set_input_as_handled()
+	else:
+		_on_other_input(event)
+
+
+# --------------------------------------------------
+# Audio
+# --------------------------------------------------
 
 func _play_click_sfx() -> void:
+	if audio_player == null or click_sfx == null:
+		return
+
 	audio_player.stream = click_sfx
 	audio_player.play()
 
+
+# --------------------------------------------------
+# Highlight
+# --------------------------------------------------
+
 func set_glow(enabled: bool) -> void:
-	highlight.set_highlight(enabled)
+	if highlight:
+		highlight.set_highlight(enabled)
 
 
-## --- Virtual hooks for subclasses -----------------------------------------
+# --------------------------------------------------
+# Virtual Hooks
+# --------------------------------------------------
 
-## Called right after is_using becomes true (before the signal fires).
-## Override for setup like resetting a cursor or starting a call tone.
 func _on_activated() -> void:
 	pass
 
 
-## Called right after is_using becomes false (before the signal fires).
-## Override for teardown.
 func _on_deactivated() -> void:
 	pass
 
 
-## Called when the "Interact" action is pressed while in use, right after
-## the click SFX plays. Override to forward the click (e.g. into a
-## SubViewport).
 func _on_interact_input(_event: InputEvent) -> void:
 	pass
 
 
-## Called for any input while in use that isn't ui_cancel or an Interact
-## press (e.g. mouse motion). Override for things like cursor dragging.
 func _on_other_input(_event: InputEvent) -> void:
 	pass

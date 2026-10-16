@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://cu02lfvrscgp7"]
+
+[ext_resource type="Script" path="res://addons/gitot/ui/github_auth_dialog.gd" id="1_ri0rs"]
+
+[node name="GithubAuthDialog" type="ConfirmationDialog" unique_id=1371466796]
+oversampling_override = 1.0
+title = "Enter your PAT"
+position = Vector2i(0, 36)
+visible = true
+script = ExtResource("1_ri0rs")
+
+[node name="TokenInput" type="LineEdit" parent="." unique_id=371238246]
+unique_name_in_owner = true
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 192.0
+offset_bottom = 51.0
+secret = true

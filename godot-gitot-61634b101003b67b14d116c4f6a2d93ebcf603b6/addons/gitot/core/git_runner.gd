@@ -1,0 +1,222 @@
+## git_runner.gd
+## Process execution for Gitot: worker threads, timeouts, shell redirect, write lock.
+## Git-domain agnostic: knows nothing about GitEngine.Command or its signal.
+class_name GitRunner
+extends RefCounted
+
+## Emitted when the write lock is taken (true) or released (false). UI shows a busy state from it,
+## so any write (commit, stage, stash...) is covered without per-button wiring.
+signal write_busy_changed(busy: bool)
+
+## Max chars of path arguments per git call. Windows CreateProcess caps the WHOLE command
+## line at 32767; 24000 leaves headroom for "git -C <root> add --" and arg quoting.
+const MAX_ARGS_CHARS: int = 24000
+
+## Whitelist for every argument interpolated into run_network()'s shell string: letters, digits
+## and . _ / - @ + : only. Space, quotes and & | < > ^ % ! ; $ ` ( ) { } # ~ * ? [ \ all have a
+## meaning in cmd.exe or sh, yet are legal in git ref names, so a blacklist can never be complete.
+const SHELL_SAFE_PATTERN: String = "^[A-Za-z0-9._/@+:-]+$"
+
+## Compiled once on first use (see SHELL_SAFE_PATTERN). Lazy: a static initializer is not reliably
+## re-run on editor hot-reload (the var stays null).
+static var _shell_safe_regex: RegEx
+
+## PID -> temp log path of running network operations (push, pull...), so a mid-operation kill
+## (timeout or teardown) can also remove the orphaned log file.
+var _active_pids: Dictionary[int, String] = { }
+
+## True while a write op is executing. Blocks any other WRITE from racing it on index.lock;
+## reads are never blocked, so every read always completes.
+var _write_busy: bool = false
+
+## Absolute project root, anchors every git call regardless of editor CWD.
+static func _project_root() -> String:
+	return ProjectSettings.globalize_path("res://")
+
+
+## Builds the shell + args that redirect a git call's stdout/stderr to log_path and
+## append a trailing exit-status marker. Used by run_network() only.
+## SECURITY: args are whitelisted by run_network() (is_shell_safe).
+static func _shell_invocation(args: PackedStringArray, log_path: String) -> Array:
+	var git_cmd: String = (
+		"git -C \"%s\" %s > \"%s\" 2>&1 && echo EXITCODE:0 >> \"%s\" || echo EXITCODE:1 >> \"%s\""
+		% [_project_root(), " ".join(args), log_path, log_path, log_path]
+	)
+	var shell: String = "cmd" if OS.get_name() == "Windows" else "sh"
+	var shell_args: PackedStringArray = (
+		["/C", git_cmd] if OS.get_name() == "Windows" else ["-c", git_cmd]
+	)
+	return [shell, shell_args]
+
+
+## True if arg can be placed in the shell string of run_network() without being interpreted.
+## Single source of truth for that rule; also used to validate names BEFORE they are created.
+static func is_shell_safe(arg: String) -> bool:
+	if _shell_safe_regex == null:
+		_shell_safe_regex = RegEx.create_from_string(SHELL_SAFE_PATTERN)
+	return _shell_safe_regex.search(arg) != null
+
+
+## Splits a redirected git-call log into [success: bool, cleaned text: String].
+static func _parse_log(log_content: String) -> Array:
+	var success: bool = log_content.contains("EXITCODE:0")
+	var clean: String = log_content \
+			.replace("EXITCODE:0", "") \
+			.replace("EXITCODE:1", "") \
+			.strip_edges()
+	return [success, clean]
+
+
+## Windows: OS.execute() decodes the pipe with the ANSI code page, so UTF-8 text comes back garbled
+## ("é" -> "Ã©"). Re-encoding with that same code page restores the raw bytes git wrote;
+## they are then decoded once, as UTF-8. No-op elsewhere (UTF-8 already) and on ASCII.
+static func _fix_encoding(text: String) -> String:
+	# ASCII-only text (and "") is identical in every encoding: skip the conversion. The OS call
+	# rejects empty input (error 87), and this keeps the common case cheap.
+	if OS.get_name() != "Windows" or text.to_utf8_buffer().size() == text.length():
+		return text
+	var bytes: PackedByteArray = text.to_multibyte_char_buffer() # Back to the raw bytes git wrote.
+	return bytes.get_string_from_utf8() if not bytes.is_empty() else text
+
+
+## Splits args after the "--" separator so each call's paths fit MAX_ARGS_CHARS.
+## No "--" or short list -> a single chunk.
+static func _chunk_args(args: PackedStringArray) -> Array[PackedStringArray]:
+	var chunks: Array[PackedStringArray] = []
+	var sep: int = args.find("--")
+	if sep == -1:
+		chunks.append(args)
+		return chunks
+	var head: PackedStringArray = args.slice(0, sep + 1) # e.g. ["add", "--"]
+	var current: PackedStringArray = head.duplicate()
+	var used: int = 0
+	for i: int in range(sep + 1, args.size()):
+		var cost: int = args[i].length() + 3 # separator + worst-case quotes
+		if used + cost > MAX_ARGS_CHARS and current.size() > head.size():
+			chunks.append(current)
+			current = head.duplicate()
+			used = 0
+		current.append(args[i])
+		used += cost
+	chunks.append(current)
+	return chunks
+
+
+## True while a write op holds the lock (see _write_busy).
+func is_write_busy() -> bool:
+	return _write_busy
+
+
+## Runs a local git command off the main thread. NOT for push/pull (see run_network).
+## @param label: command name, used in logs.
+## @param is_write: mutates index/tree/refs. Takes the write lock; a write is dropped (logged,
+## on_done never called) while another is held. Reads always run.
+## @param on_done: Callable(exit_code: int, output: Array[String]), called on the main thread.
+func run_fast(label: String, args: PackedStringArray, is_write: bool, on_done: Callable) -> void:
+	if is_write:
+		if _write_busy:
+			GitotLogger.i("%s skipped: Git is still finishing the previous change. Try again." % label.capitalize())
+			return
+		_write_busy = true
+		write_busy_changed.emit(true)
+	WorkerThreadPool.add_task(_execute_and_report.bind(args, is_write, on_done))
+
+
+## Runs a network git command (push/pull) with a kill-on-timeout guard.
+## Output is captured via shell redirection to a temp file, since
+## OS.create_process() alone does not expose stdout/stderr.
+## @param label: command name, used in the log file name.
+## @param on_done: Callable(exit_code: int, output: Array[String]).
+func run_network(label: String, args: PackedStringArray, on_done: Callable) -> void:
+	# Time.get_ticks_usec() disambiguates concurrent same-named ops (e.g. two fetches);
+	# the real PID isn't known until after OS.create_process() returns, too late for this path.
+	var log_path: String = ProjectSettings.globalize_path(
+		"user://gitot_%s_%d.log" % [label, Time.get_ticks_usec()]
+	)
+
+	# SECURITY: args are joined into a shell string. Refuse anything outside the whitelist
+	# (see SHELL_SAFE_PATTERN) instead of trying to escape it for two different shells.
+	for arg: String in args:
+		if not is_shell_safe(arg):
+			var refused: Array[String] = ["Refused: '%s' has characters that are unsafe for the shell." % arg]
+			on_done.call_deferred(-1, refused)
+			return
+
+	var shell_invocation: Array = _shell_invocation(args, log_path)
+	var pid: int = OS.create_process(shell_invocation[0], shell_invocation[1])
+	if pid == -1:
+		var failure: Array[String] = ["Failed to start process."]
+		on_done.call_deferred(-1, failure)
+		return
+
+	_active_pids[pid] = log_path
+	_poll_process.call_deferred(pid, log_path, Time.get_ticks_msec(), on_done)
+
+
+## Kills any push/pull processes still running and removes their logs. Call on plugin exit.
+func teardown() -> void:
+	for pid: int in _active_pids:
+		if OS.is_process_running(pid):
+			OS.kill(pid)
+		var log_path: String = _active_pids[pid]
+		if FileAccess.file_exists(log_path):
+			DirAccess.remove_absolute(log_path)
+	_active_pids.clear()
+
+
+## Polls a network process until it ends or exceeds "network_timeout_sec",
+## then reports through on_done. Reads the redirected log once the process ends.
+func _poll_process(pid: int, log_path: String, start_time_ms: int, on_done: Callable) -> void:
+	# teardown() cleared the pid (process killed, log removed): stop polling, never report.
+	if not _active_pids.has(pid):
+		return
+	if OS.is_process_running(pid):
+		var elapsed_sec: float = (Time.get_ticks_msec() - start_time_ms) / 1000.0
+		# Read per poll (cached Dictionary lookup) so a settings change applies to in-flight ops.
+		var timeout_sec: int = GitotSettings.get_value("network_timeout_sec")
+		if elapsed_sec > timeout_sec:
+			OS.kill(pid)
+			_active_pids.erase(pid)
+			if FileAccess.file_exists(log_path):
+				DirAccess.remove_absolute(log_path) # Orphaned log from the killed process.
+			var timeout_output: Array[String] = ["Timed out after %ds." % timeout_sec]
+			on_done.call(-1, timeout_output)
+			return
+		# Not done yet - poll again after a 0.5s delay.
+		await Engine.get_main_loop().create_timer(0.5).timeout
+		_poll_process(pid, log_path, start_time_ms, on_done)
+		return
+
+	_active_pids.erase(pid)
+
+	var log_content: String = ""
+	if FileAccess.file_exists(log_path):
+		log_content = FileAccess.get_file_as_string(log_path)
+		DirAccess.remove_absolute(log_path) # Temp file already read.
+
+	# The marker is the real exit status of the git command (see _shell_invocation).
+	var parsed: Array = _parse_log(log_content)
+	var output: Array[String] = [parsed[1]]
+	on_done.call(0 if parsed[0] else 1, output)
+
+
+## Runs on a WorkerThreadPool thread.
+func _execute_and_report(args: PackedStringArray, is_write: bool, on_done: Callable) -> void:
+	var output: Array[String] = []
+	var exit_code: int = 0
+	for chunk: PackedStringArray in _chunk_args(args):
+		var full_args: PackedStringArray = PackedStringArray(["-C", _project_root()]) + chunk
+		exit_code = OS.execute("git", full_args, output, true) # Appends one entry per call.
+		if exit_code != 0:
+			break # Report the first failure; don't pile more calls onto it.
+	for i: int in output.size():
+		output[i] = _fix_encoding(output[i])
+	call_deferred("_finish_fast", exit_code, output, is_write, on_done)
+
+
+## Main thread: releases the write lock (if held) before reporting.
+func _finish_fast(exit_code: int, output: Array[String], is_write: bool, on_done: Callable) -> void:
+	if is_write:
+		_write_busy = false
+		write_busy_changed.emit(false)
+	on_done.call(exit_code, output)

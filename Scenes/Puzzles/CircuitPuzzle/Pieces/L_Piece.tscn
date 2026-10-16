@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://7guvqg5llo0j"]
+
+[ext_resource type="Script" uid="uid://c4673tpdays56" path="res://Scenes/Puzzles/CircuitPuzzle/Pieces/CircuitPiece.gd" id="1_lvk4d"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_lvk4d"]
+height = 0.19972229
+radius = 0.09863281
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2tcha"]
+albedo_color = Color(0.26657522, 0.2665752, 0.2665752, 1)
+emission_enabled = true
+emission = Color(0.88149744, 0.49314374, 7.70092e-07, 1)
+emission_energy_multiplier = 0.0
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_lvk4d"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g4v7s"]
+radius = 0.019042969
+height = 0.19470215
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xedpg"]
+radius = 0.019042969
+height = 0.13345337
+
+[node name="L_Piece" type="StaticBody3D" unique_id=1268358826]
+script = ExtResource("1_lvk4d")
+
+[node name="NodeColider" type="CollisionShape3D" parent="." unique_id=411532299]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.0012098402, 0.0016579721, 0.002843555)
+shape = SubResource("CylinderShape3D_lvk4d")
+
+[node name="Wire" type="Sprite3D" parent="." unique_id=1176695886]
+transform = Transform3D(12.983434, 0, 0, 0, 3.7202218, 0, 0, 0, 1, -0.046280503, 0, 0.09739685)
+material_override = SubResource("StandardMaterial3D_2tcha")
+texture = SubResource("CanvasTexture_lvk4d")
+
+[node name="Wire2" type="Sprite3D" parent="." unique_id=71198961]
+transform = Transform3D(-5.675239e-07, 3.7202218, 0, -12.983432, -1.6261605e-07, 0, 0, 0, 1, -0.00037321448, 0.050759297, 0.09739685)
+material_override = SubResource("StandardMaterial3D_2tcha")
+texture = SubResource("CanvasTexture_lvk4d")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=56656619]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.12722269)
+light_energy = 0.02
+light_size = 0.533
+light_bake_mode = 1
+
+[node name="Adjecents" type="Area3D" parent="." unique_id=2143332448]
+
+[node name="AdjecentCollider" type="CollisionShape3D" parent="Adjecents" unique_id=964334615]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, -0.082, 0, 0.089)
+shape = SubResource("CapsuleShape3D_g4v7s")
+
+[node name="AdjecentCollider2" type="CollisionShape3D" parent="Adjecents" unique_id=671846906]
+transform = Transform3D(0.99016005, 6.534442e-06, 0.13993995, -0.018880919, 0.99086255, 0.1335477, -0.13866036, -0.13487579, 0.98111266, -0.002100272, 0.09010572, 0.09439379)
+shape = SubResource("CapsuleShape3D_xedpg")

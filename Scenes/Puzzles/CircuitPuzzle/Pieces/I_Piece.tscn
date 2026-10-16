@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://cip667gfkvun4"]
+
+[ext_resource type="Script" uid="uid://c4673tpdays56" path="res://Scenes/Puzzles/CircuitPuzzle/Pieces/CircuitPiece.gd" id="1_o7mvk"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_o7mvk"]
+height = 0.19972229
+radius = 0.09863281
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qt45q"]
+albedo_color = Color(0.26657522, 0.2665752, 0.2665752, 1)
+emission_enabled = true
+emission = Color(0.5294118, 0.80784315, 0.92156863, 1)
+emission_energy_multiplier = 0.0
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_yf5fn"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g4v7s"]
+radius = 0.019042969
+height = 0.26556396
+
+[node name="I_Piece" type="StaticBody3D" unique_id=300004977]
+script = ExtResource("1_o7mvk")
+
+[node name="NodeColider" type="CollisionShape3D" parent="." unique_id=2083247846]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+shape = SubResource("CylinderShape3D_o7mvk")
+
+[node name="Wire" type="Sprite3D" parent="." unique_id=2027819609]
+transform = Transform3D(21.353542, 0, 0, 0, 3.7202218, 0, 0, 0, 1, 0, 0, 0.09739685)
+material_override = SubResource("StandardMaterial3D_qt45q")
+texture = SubResource("CanvasTexture_yf5fn")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1940524358]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.12722269)
+light_energy = 0.02
+light_size = 0.533
+light_bake_mode = 1
+
+[node name="Adjecents" type="Area3D" parent="." unique_id=2143332448]
+
+[node name="AdjecentsCollider" type="CollisionShape3D" parent="Adjecents" unique_id=964334615]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0.094)
+shape = SubResource("CapsuleShape3D_g4v7s")
+
+[connection signal="area_entered" from="Adjecents" to="." method="_on_adjecents_area_entered"]
+[connection signal="area_exited" from="Adjecents" to="." method="_on_adjecents_area_exited"]

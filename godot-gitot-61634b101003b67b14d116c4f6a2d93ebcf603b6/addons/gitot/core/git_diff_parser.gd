@@ -1,0 +1,126 @@
+## git_diff_parser.gd
+## Parses `git diff -U0` hunk headers into line-state data for gutter coloring.
+## Reference: https://git-scm.com/docs/git-diff (unified diff hunk format)
+class_name GitDiffParser
+extends RefCounted
+
+## Change state of a line, used for the gutter color.
+enum LineState {
+	ADDED,
+	MODIFIED,
+}
+
+## Lazy-compiled: a static initializer is not reliably re-run on editor hot-reload
+## (the var then stays null).
+static var _new_hunk_regex: RegEx
+static var _old_hunk_regex: RegEx
+
+
+static func _new_regex() -> RegEx:
+	if _new_hunk_regex == null:
+		_new_hunk_regex = RegEx.create_from_string("\\+(\\d+)(?:,(\\d+))?")
+	return _new_hunk_regex
+
+
+static func _old_regex() -> RegEx:
+	if _old_hunk_regex == null:
+		_old_hunk_regex = RegEx.create_from_string("-(\\d+)(?:,(\\d+))?")
+	return _old_hunk_regex
+
+
+## Parses `git diff -U0` hunk headers.
+## @return: {new-file line number (1-based): LineState}. A hunk without removed lines is ADDED,
+## otherwise MODIFIED.
+static func parse(raw_diff: String) -> Dictionary:
+	var result: Dictionary = { }
+
+	for line: String in raw_diff.split("\n", false):
+		if not line.begins_with("@@"):
+			continue
+
+		var match_result: RegExMatch = _new_regex().search(line)
+		if not match_result:
+			continue
+
+		var new_start: int = match_result.get_string(1).to_int()
+		var new_count: int = match_result.get_string(2).to_int() if match_result.get_string(2) != "" else 1
+
+		var old_count: int = _old_count(line)
+		var state: LineState = LineState.ADDED if old_count == 0 else LineState.MODIFIED
+
+		for i: int in range(new_count):
+			result[new_start + i] = state
+
+	return result
+
+
+## Parses a full-context `git diff -U3` into per-file hunks for the bottom-panel diff viewer.
+## One entry per `diff --git` block; used by the working-tree diff and the commit diff.
+## Line numbers are 1-based, as in git.
+## @return: [{file: String, hunks: [{old_start: int, new_start: int, lines: [{type, text}]}]}]
+##   type is "add" / "del" / "context". Input without a `diff --git` block yields an empty Array.
+static func parse_full(raw_diff: String) -> Array[Dictionary]:
+	var files: Array[Dictionary] = []
+	var current_file: Dictionary = { }
+	var current_hunk: Dictionary = { }
+
+	for line: String in raw_diff.split("\n", false):
+		if line.begins_with("diff --git"):
+			_flush_hunk(current_file, current_hunk)
+			current_hunk = { }
+			if not current_file.is_empty():
+				files.append(current_file)
+			current_file = { "file": "", "hunks": [] }
+		elif current_hunk.is_empty() and line.begins_with("+++ b/"): # Inside a hunk it is an added line.
+			current_file["file"] = line.trim_prefix("+++ b/")
+		elif line.begins_with("@@"):
+			_flush_hunk(current_file, current_hunk)
+			var new_match: RegExMatch = _new_regex().search(line)
+			var old_match: RegExMatch = _old_regex().search(line)
+			if not new_match or not old_match:
+				current_hunk = { }
+				continue
+			current_hunk = {
+				"old_start": old_match.get_string(1).to_int(),
+				"new_start": new_match.get_string(1).to_int(),
+				"lines": [],
+			}
+		elif not current_hunk.is_empty():
+			if line.begins_with("\\"):
+				continue # "\ No newline at end of file": git metadata, not a content line.
+			if line.begins_with("+"):
+				current_hunk["lines"].append({ "type": "add", "text": line.substr(1) })
+			elif line.begins_with("-"):
+				current_hunk["lines"].append({ "type": "del", "text": line.substr(1) })
+			else:
+				current_hunk["lines"].append({ "type": "context", "text": line.substr(1) })
+
+	_flush_hunk(current_file, current_hunk)
+	if not current_file.is_empty():
+		files.append(current_file)
+	return files
+
+
+## Parses `--name-status` output: one "<letter>\t<path>" per line.
+## @return: [{"status": String, "path": String}]. Malformed lines are skipped.
+static func parse_name_status(raw: String) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for line: String in raw.split("\n", false):
+		var parts: PackedStringArray = line.strip_edges().split("\t", false, 1)
+		if parts.size() == 2:
+			result.append({ "status": parts[0], "path": GitPath.unquote(parts[1]) })
+	return result
+
+
+## Appends a completed hunk to its file entry, if one is in progress.
+static func _flush_hunk(file: Dictionary, hunk: Dictionary) -> void:
+	if not hunk.is_empty() and not file.is_empty():
+		file["hunks"].append(hunk)
+
+
+## Returns the old hunk's line count from a unified diff header, or -1 if the header is malformed.
+static func _old_count(header: String) -> int:
+	var match_result: RegExMatch = _old_regex().search(header)
+	if not match_result:
+		return -1
+	return match_result.get_string(2).to_int() if match_result.get_string(2) != "" else 1

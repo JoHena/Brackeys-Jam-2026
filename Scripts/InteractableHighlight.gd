@@ -7,7 +7,7 @@ class_name InteractableHighlight
 
 @export_group("Highlight")
 @export var highlight_color: Color = Color(0.99, 0.65, 0.14, 1.0)
-@export var glow_intensity: float = 2.5
+@export var glow_intensity: float = 0.3
 
 @export_group("Transition")
 @export var fade_in_duration: float = 0.2

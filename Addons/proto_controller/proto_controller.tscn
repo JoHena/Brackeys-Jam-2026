@@ -48,6 +48,7 @@ shape = SubResource("CapsuleShape3D_iof21")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Head" unique_id=752879570]
+current = true
 
 [node name="ShapeCast3D" type="ShapeCast3D" parent="Head/Camera3D" unique_id=1016037235]
 shape = SubResource("SphereShape3D_g4v7s")
@@ -61,6 +62,7 @@ mesh = SubResource("QuadMesh_yf5fn")
 
 [node name="Dot" type="Sprite3D" parent="Head/Camera3D" unique_id=1907707575]
 transform = Transform3D(0.003, 0, 0, 0, 0.003, 0, 0, 0, 0.003, 0, 0, -1.9983517)
+visible = false
 no_depth_test = true
 texture = ExtResource("3_62upf")
 

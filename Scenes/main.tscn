@@ -95,14 +95,11 @@ _data = {
 }
 
 [sub_resource type="Environment" id="Environment_g4v7s"]
-background_mode = 1
-ambient_light_source = 2
-ambient_light_color = Color(0.6175914, 0.33230355, 0, 1)
 tonemap_mode = 4
-tonemap_exposure = 0.1
 tonemap_agx_contrast = 2.0
 ssao_enabled = true
 ssil_enabled = true
+glow_enabled = true
 fog_light_color = Color(0.8867115, 0.10755535, 0.6858717, 1)
 fog_light_energy = 1.4
 fog_density = 0.2265
@@ -184,7 +181,7 @@ transform = Transform3D(-0.44668174, -0.031934727, 0.89412284, -0.028976465, 0.9
 current = true
 
 [node name="CinematicCamera" type="Camera3D" parent="." unique_id=551245615]
-transform = Transform3D(0.085712455, -3.818418e-08, -0.99631864, 0.99561596, 0.037585877, 0.085651785, 0.0374476, -0.99929214, 0.003221616, -0.3499977, 0.082470655, -2.5715227)
+transform = Transform3D(0.085712455, -3.818416e-08, -0.9963182, 0.99561596, 0.037585862, 0.08565175, 0.0374476, -0.9992917, 0.0032216145, -0.3499977, 0.082470655, -2.5715227)
 current = true
 fov = 39.4
 
@@ -199,7 +196,6 @@ environment = SubResource("Environment_g4v7s")
 [node name="CirclePuzzle" type="AreaLight3D" parent="Lighting" unique_id=772380913]
 transform = Transform3D(-0.05165439, -0.99836016, -0.024676694, 0.011458979, -0.025300572, 0.99961424, -0.9985993, 0.051351696, 0.012747074, -3.1310856, 1.8467897, -0.43311262)
 light_color = Color(0.27464467, 0.6605274, 0.99999994, 1)
-light_energy = 16.0
 light_volumetric_fog_energy = 11.455
 light_size = 0.55
 area_size = Vector2(0.2946539, 0.2387507)
@@ -207,7 +203,6 @@ area_size = Vector2(0.2946539, 0.2387507)
 [node name="CeilingLight" type="SpotLight3D" parent="Lighting" unique_id=417620788]
 transform = Transform3D(0.99949414, -0.0074510565, -0.030920675, 0.031414077, 0.079164445, 0.9963665, -0.004976165, -0.9968338, 0.07935846, -0.6113691, 4.3132925, -0.56686354)
 light_color = Color(0.8673385, 0.52616495, 0.07383973, 1)
-light_energy = 7.408
 light_volumetric_fog_energy = 7.259
 light_specular = 16.0
 shadow_enabled = true
@@ -216,23 +211,13 @@ spot_range = 23.331
 [node name="IntercomLight" type="AreaLight3D" parent="Lighting" unique_id=555329122]
 transform = Transform3D(-0.11140483, 0, -0.9937751, 0, 1, 0, 0.9937751, 0, -0.11140483, 1.8345194, 1.3855889, -3.3649487)
 light_color = Color(0.9091611, 0.5434754, 0.23992789, 1)
-light_energy = 4.704
-light_volumetric_fog_energy = 2.63
-light_specular = 0.704
+area_range = 1.261
+area_attenuation = 0.8
 area_size = Vector2(0.2946539, 0.2387507)
-
-[node name="LightPuzzleLight" type="AreaLight3D" parent="Lighting" unique_id=703605651]
-transform = Transform3D(-0.23118514, 0.007737563, -0.97287905, 0.04565174, 0.99895316, -0.0029032798, 0.97183824, -0.04508481, -0.23129635, 1.5072373, 1.2656786, -1.7270269)
-light_indirect_energy = 2.926
-light_volumetric_fog_energy = 1.741
-light_size = 1.0
-shadow_enabled = true
-area_size = Vector2(0.7344496, 0.5577934)
 
 [node name="SpotLight3D" type="SpotLight3D" parent="Lighting" unique_id=162072021]
 transform = Transform3D(-0.09249828, -0.99568284, -0.007721603, -0.011125286, -0.006720901, 0.9999155, -0.99565065, 0.09257637, -0.010455585, 2.637667, 2.471992, -2.6054726)
 light_color = Color(0.99, 0, 0.016499748, 1)
-light_energy = 9.238
 light_volumetric_fog_energy = 8.287
 light_size = 1.0
 light_specular = 6.045
@@ -242,16 +227,13 @@ shadow_blur = 2.0
 [node name="PCLight" type="AreaLight3D" parent="Lighting" unique_id=1763555857]
 transform = Transform3D(0.020957923, -0.9993963, -0.027708534, -0.76485735, -0.033875406, 0.64330834, -0.6438587, 0.0077106683, -0.7651056, 1.0675148, 1.3995126, 0.95461965)
 light_color = Color(0, 0.8600749, 0.8673802, 1)
-light_energy = 3.534
-light_size = 0.559
-light_specular = 16.0
+light_specular = 5.16
 shadow_enabled = true
 area_size = Vector2(0.5800593, 1)
 
 [node name="Painting" type="AreaLight3D" parent="Lighting" unique_id=1080030779]
 transform = Transform3D(-0.051654395, -0.99836016, -0.024676694, 0.26952502, -0.037729274, 0.962254, -0.96160704, 0.04305366, 0.27103195, -0.8013577, 2.1052027, -3.4661272)
 light_color = Color(0, 0.76540405, 0.3149964, 1)
-light_energy = 16.0
 light_volumetric_fog_energy = 11.455
 light_size = 0.55
 area_size = Vector2(0.2946539, 0.2387507)

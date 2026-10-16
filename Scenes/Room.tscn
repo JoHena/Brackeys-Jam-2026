@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://bakhfle4w5jfd" path="res://Scenes/Puzzles/LightPuzzle.tscn" id="11_l0f8h"]
 [ext_resource type="PackedScene" uid="uid://c164xio57yhjk" path="res://Scenes/Puzzles/CirclePuzzle.tscn" id="12_l0f8h"]
 [ext_resource type="PackedScene" uid="uid://b3dlhgxi5qu02" path="res://Painting.tscn" id="12_vofke"]
+[ext_resource type="PackedScene" uid="uid://b8vsmswsbuhc3" path="res://Scenes/Puzzles/CircuitPuzzle/ElectricalPuzzle.tscn" id="13_vofke"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fdnlq"]
 resource_name = "wall"
@@ -242,6 +243,10 @@ transform = Transform3D(0.3, 0, 0, 0, 0.16407555, 0, 0, 0, 0.1707232, 0, 0.00248
 operation = 2
 
 [node name="Puzzles" type="Node" parent="." unique_id=2105888593]
+
+[node name="ElectricalPuzzle" parent="Puzzles" unique_id=964789042 instance=ExtResource("13_vofke")]
+transform = Transform3D(-1, 0, -1.509958e-07, 0, 1, 0, 1.509958e-07, 0, -1, -1.632, 0.44281322, 1.41)
+collision_layer = 4
 
 [node name="LightPuzzle" parent="Puzzles" unique_id=1872927672 instance=ExtResource("11_l0f8h")]
 transform = Transform3D(-1.3113416e-08, 0, -0.29999998, 0, 0.29999998, 0, 0.29999998, 0, -1.3113416e-08, 1.9568417, 0.7479689, -1.9324607)
