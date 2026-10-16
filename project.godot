@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 CameraTransition="*uid://d1ov6akt0makq"
+Settings="*uid://dnskpdlmjn4bo"
 
 [display]
 

@@ -21,7 +21,7 @@ class_name Player
 
 @export_group("Speeds")
 ## Look around rotation speed.
-@export var look_speed: float = 0.002
+@export var base_look_speed: float = 0.002
 ## Normal speed.
 @export var base_speed: float = 7.0
 ## Speed of jump.
@@ -56,6 +56,8 @@ class_name Player
 
 var mouse_captured: bool = false
 var look_rotation: Vector2
+## Look speed after player sensitivity is applied
+var look_speed: float
 var move_speed: float = 0.0
 var freeflying: bool = false
 var footstep_cooldown: float = 0.0
@@ -80,6 +82,9 @@ var is_animation_playing: bool = true
 func _ready() -> void:
 	look_rotation.y = rotation.y
 	look_rotation.x = head.rotation.x
+	
+	_update_look_speed() # Initialize look speed
+	Settings.on_settings_save.connect(_update_look_speed)
 
 
 ## Convenience for cutscenes/callers.
@@ -273,6 +278,11 @@ func rotate_look(rot_input: Vector2) -> void:
 
 	head.transform.basis = Basis()
 	head.rotate_x(look_rotation.x)
+
+
+## Updates the look_speed variable after settings are saved.
+func _update_look_speed() -> void:
+	look_speed = base_look_speed * Settings.sensitivity
 
 
 # -------------------------------------------------------------------
